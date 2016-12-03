@@ -6,15 +6,13 @@ body {
 
 main {
   flex: 1 0 auto;
+  position: relative;
 }
 
 .pull-down {
   z-index: 2;
   position: absolute;
   top: 0;
-}
-
-.background {
-  z-index: 0;
-  position: relative;
+  left: 0;
+  right: 0;
 }
