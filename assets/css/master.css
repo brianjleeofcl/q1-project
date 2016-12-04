@@ -9,18 +9,15 @@ main {
   position: relative;
 }
 
-.pull-down {
-  z-index: 2;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
 footer.page-footer{
   padding-top: 0;
 }
 
 #input {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   margin-bottom: 0;
 }
