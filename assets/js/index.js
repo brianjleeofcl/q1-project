@@ -1,7 +1,10 @@
 (function() {
   'use strict';
 
+
+
   const tabSlideUp = function() {
+    
     $('#input').slideUp();
   };
 
