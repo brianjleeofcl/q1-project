@@ -16,3 +16,11 @@ main {
   left: 0;
   right: 0;
 }
+
+footer.page-footer{
+  padding-top: 0;
+}
+
+#input {
+  margin-bottom: 0;
+}
