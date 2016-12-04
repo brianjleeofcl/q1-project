@@ -12,6 +12,7 @@
   })
 
   $('#submit-input').on('click', () => {
+    $("#input").css('min-height', 0)
     $('#input').slideUp();
   });
 
