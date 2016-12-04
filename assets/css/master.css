@@ -10,6 +10,7 @@ main {
 }
 
 footer.page-footer{
+  margin-top: 0;
   padding-top: 0;
 }
 
@@ -20,4 +21,9 @@ footer.page-footer{
   left: 0;
   right: 0;
   margin-bottom: 0;
+  min-height: 100%;
+}
+
+#card-image img {
+  width: 100%;
 }
