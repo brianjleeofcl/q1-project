@@ -4,24 +4,34 @@
   $('select').material_select();
   $('.modal').modal();
 
+  const numberValidate = function($input) {
+    if ($input.val() !== '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   const inputValidation = function($target) {
     const targetType = $target.find('input').attr('type');
 
-    console.log(targetType);
-    if ($target.find('input').val() && targetType === 'number') {
-      return true;
-    }
-    else if (targetType === 'number') {
-      return false;
+    if (targetType === 'number') {
+      return numberValidate($target.find('input'));
     }
 
     const radioVal = [];
+    const radioCat = $('select.rules').val()
 
     $('input:radio:enabled:checked').each((index, element) => {
       radioVal.push($(element).val());
     })
 
-    console.log(radioVal);
+    console.log(radioVal.length, radioCat.length);
+    if (radioCat.length !== 0 && radioVal.length === radioCat.length) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const displayNextQ = function($target) {
@@ -33,8 +43,11 @@
 
   const collectData = function() {
     const obj = {};
-    $('.input-field').find('input').each((index, element) => {
+    $('.input-field').find('input[type="number"]').each((index, element) => {
       obj[element.id] = element.value;
+    })
+    $('.input-field').find('input:radio:checked').each((index, element) => {
+      obj[element.name] = element.value;
     })
     return obj
   }
