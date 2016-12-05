@@ -4,7 +4,7 @@
   $('select').material_select();
   $('.modal').modal();
 
-  const deck = [];
+  let deck = [];
   let inputData = {};
 
   const numberValidate = function($input) {
@@ -66,11 +66,24 @@
       if ($xhr.status !== 200) {
         return;
       }
-      console.log(result);
-      deck.push(...result.cards);
-      console.log(deck);
+
+      deck = result.cards.map((obj) => {
+        const card = {};
+        card.code = obj.code;
+        card.images = obj.images;
+        if (obj.value === inputData.value && obj.suit === inputData.suit) {
+          card.condition = true;
+        } else if (typeof(inputData.suit) === 'undefined' && obj.value === inputData.value) {
+          card.condition = true;
+        } else if (typeof(inputData.value) === 'undefined' && obj.suit === inputData.suit) {
+          card.condition = true;
+        } else {
+          card.condition = false
+        }
+        return card;
+      })
     })
-  }
+  };
 
   const generateDeck = function(data) {
     const $xhr = $.ajax({
