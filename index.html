@@ -52,86 +52,87 @@
               <h6>3: What are the rules for the drawn cards?</h6>
               <div class="row">
                 <div class="col s3 input-field">
-                  <select multiple class="rules-1">
+                  <select multiple class="rules">
+                    <option value="" disabled selected>Options</option>
                     <option value="suit">suit</option>
                     <option value="value">value</option>
                   </select>
                   <label>Choose suit, value or both</label>
                 </div>
-                <div class="col s9 input-field" id="rule-radio" class="rules-1">
-                <div>
-                  <span>
-                    <input name="suit" type="radio" class="filled-in" id="spade" value="S">
-                    <label for="spade">Spades</label>
-                  </span>
-                  <span>
-                    <input name="suit"  type="radio" class="filled-in" id="heart" value="H">
-                    <label for="heart">Hearts</label>
-                  </span>
-                  <span>
-                    <input name="suit" type="radio" class="filled-in" id="club" value="C">
-                    <label for="club">Clubs</label>
-                  </span>
-                  <span>
-                    <input name="suit" type="radio" class="filled-in" id="diamond" value="D">
-                    <label for="diamond">Diamonds</label>
-                  </span>
+                <div class="col s9 input-field" id="rule-radio" class="rules">
+                  <div class="suits">
+                    <span>
+                      <input disabled name="suit" type="radio" class="filled-in" id="spade" value="S">
+                      <label for="spade">Spades</label>
+                    </span>
+                    <span>
+                      <input disabled name="suit"  type="radio" class="filled-in" id="heart" value="H">
+                      <label for="heart">Hearts</label>
+                    </span>
+                    <span>
+                      <input disabled name="suit" type="radio" class="filled-in" id="club" value="C">
+                      <label for="club">Clubs</label>
+                    </span>
+                    <span>
+                      <input disabled name="suit" type="radio" class="filled-in" id="diamond" value="D">
+                      <label for="diamond">Diamonds</label>
+                    </span>
+                  </div>
+                  <div class="values">
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="ace" value="A">
+                      <label for="ace">A</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="two" value="2">
+                      <label for="two">2</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="three" value="3">
+                      <label for="three">3</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="four" value="4">
+                      <label for="four">4</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="five" value="5">
+                      <label for="five">5</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="six" value="6">
+                      <label for="six">6</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="seven" value="7">
+                      <label for="seven">7</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="eight" value="8">
+                      <label for="eight">8</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="nine" value="9">
+                      <label for="nine">9</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="ten" value="10">
+                      <label for="ten">10</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="jack" value="J">
+                      <label for="jack">J</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="queen" value="Q">
+                      <label for="queen">Q</label>
+                    </span>
+                    <span>
+                      <input disabled name="value" type="radio" class="filled-in" id="king" value="K">
+                      <label for="king">K</label>
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="ace" value="A">
-                    <label for="ace">A</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="two" value="2">
-                    <label for="two">2</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="three" value="3">
-                    <label for="three">3</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="four" value="4">
-                    <label for="four">4</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="five" value="5">
-                    <label for="five">5</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="six" value="6">
-                    <label for="six">6</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="seven" value="7">
-                    <label for="seven">7</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="eight" value="8">
-                    <label for="eight">8</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="nine" value="9">
-                    <label for="nine">9</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="ten" value="10">
-                    <label for="ten">10</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="jack" value="J">
-                    <label for="jack">J</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="queen" value="Q">
-                    <label for="queen">Q</label>
-                  </span>
-                  <span>
-                    <input name="value" type="radio" class="filled-in" id="king" value="K">
-                    <label for="king">K</label>
-                  </span>
-                </div>
-              </div>
               </div>
               <div class="row">
                 <div class="col s12 center-align">

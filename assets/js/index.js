@@ -22,6 +22,21 @@
     displayNextQ($curQuestion);
   });
 
+  $('select.rules').on('change', () => {
+    const selected = $('select.rules').val();
+
+    if (selected.includes('suit')) {
+      $('.suits input[type="radio"]').prop('disabled', false);
+    } else {
+      $('.suits input[type="radio"]').prop('disabled', true);
+    }
+    if (selected.includes('value')) {
+      $('.values input[type="radio"]').prop('disabled', false);
+    } else {
+      $('.values input[type="radio"]').prop('disabled', true);
+    }
+  })
+
   $('#submit-input').on('click', () => {
     $('#input').css('min-height', 0);
     $('#input').slideUp();
