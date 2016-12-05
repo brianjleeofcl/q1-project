@@ -4,6 +4,9 @@
   $('select').material_select();
   $('.modal').modal();
 
+  const deck = [];
+  let inputData = {};
+
   const numberValidate = function($input) {
     if ($input.val() !== '') {
       return true;
@@ -26,7 +29,6 @@
       radioVal.push($(element).val());
     })
 
-    console.log(radioVal.length, radioCat.length);
     if (radioCat.length !== 0 && radioVal.length === radioCat.length) {
       return true;
     } else {
@@ -42,14 +44,50 @@
   }
 
   const collectData = function() {
-    const obj = {};
+    inputData = {};
+
     $('.input-field').find('input[type="number"]').each((index, element) => {
-      obj[element.id] = element.value;
+      inputData[element.id] = element.value;
     })
     $('.input-field').find('input:radio:checked').each((index, element) => {
-      obj[element.name] = element.value;
+      inputData[element.name] = element.value;
     })
-    return obj
+  }
+
+  const drawDeck = function(id, deckCount) {
+    const cardCount = deckCount * 52
+    const $xhr = $.ajax({
+      method: 'GET',
+      url:`https://deckofcardsapi.com/api/deck/${id}/draw/?count=${cardCount}`,
+      dataType: 'json'
+    })
+
+    $xhr.done((result) => {
+      if ($xhr.status !== 200) {
+        return;
+      }
+      console.log(result);
+      deck.push(...result.cards);
+      console.log(deck);
+    })
+  }
+
+  const generateDeck = function(data) {
+    const $xhr = $.ajax({
+      method: 'GET',
+      url: `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${data.q1}`,
+      dataType: 'json'
+    });
+
+    $xhr.done((result) => {
+      if ($xhr.status !== 200) {
+        return;
+      }
+
+      const deckID = result.deck_id;
+
+      drawDeck(deckID, data.q1);
+    });
   }
 
   $('.question-field').on('click', '.current button', () => {
@@ -82,7 +120,7 @@
   $('#submit-input').on('click', () => {
     $('#input').css('min-height', 0);
     $('#input').slideUp();
-    const data = collectData();
-    console.log(data);
+    collectData();
+    generateDeck(inputData);
   });
 })();
