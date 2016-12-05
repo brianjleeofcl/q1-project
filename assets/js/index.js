@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  $('select').material_select();
+
   const inputValidation = function() {
     return
   };

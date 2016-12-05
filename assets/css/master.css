@@ -27,3 +27,8 @@ footer.page-footer{
 #card-image img {
   width: 100%;
 }
+
+#rule-radio label {
+  padding-left: 23px;
+  padding-right: 5px;
+}
