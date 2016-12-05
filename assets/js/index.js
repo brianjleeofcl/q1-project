@@ -2,6 +2,7 @@
   'use strict';
 
   $('select').material_select();
+  $('.modal').modal();
 
   const inputValidation = function() {
     return
