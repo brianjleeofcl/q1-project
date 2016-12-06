@@ -59,7 +59,7 @@
                   </select>
                   <label>Choose suit, value or both</label>
                 </div>
-                <div class="col s9 input-field" id="rule-radio" class="rules">
+                <div class="col s9 input-field rules" id="rule-radio">
                   <div class="suits">
                     <span>
                       <input disabled name="suit" type="radio" class="filled-in" id="spade" value="SPADES">
@@ -144,7 +144,7 @@
               <h6>4: Run how many times?</h6>
               <div class="col s8 input-field">
                 <input type="number" id="q4" value="">
-                <label for=""></label>
+                <label for="q4"></label>
               </div>
               <div class="col s4">
                 <button class="btn" type="submit" name="button">submit</button>
@@ -176,7 +176,6 @@
               <div class="col s4">
                 <div class="right-align">
                   <h5 id="calc-prob">
-
                   </h5>
                 </div>
               </div>
@@ -191,8 +190,8 @@
               <div class="col s3 control-inputs">
                 <h6>Controls:</h6>
                 <p class="range-field">
-                  <label for="">Speed (sec)</label>
-                  <input type="range" id="speed" value="1" max="1.5" min=".25" step=".25">
+                  <label for="speed">Speed (sec)</label>
+                  <input type="range" id="speed" value="1" max="1.5" min="0.25" step="0.25">
                 </p>
                 <div class="center-align">
                   <button class="btn" type="button" name="start">start</button>
