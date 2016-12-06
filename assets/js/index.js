@@ -6,7 +6,7 @@
 
   let deck = [];
   let inputData = {};
-  let maxRun = 0;
+  let remainingRuns = 0;
   let currentState = {
     occurrence: 0,
     total: 0
@@ -59,7 +59,7 @@
       inputData.rule[element.name] = element.value;
     });
 
-    maxRun = parseInt(inputData.q4);
+    remainingRuns = parseInt(inputData.q4);
     console.log(inputData);
   };
 
@@ -219,8 +219,9 @@
     let intervalID;
 
     return {
-      start() {
+      start: function() {
         intervalID = setInterval(fn, duration);
+        console.log(remainingRuns);
       },
       stop() {
         clearInterval(intervalID);
@@ -230,10 +231,15 @@
 
   const timer = execution(() => {
     renderCard();
-    maxRun--;
+    remainingRuns--;
+    console.log(remainingRuns);
+    if (remainingRuns === 0) {
+      timer.stop();
+    }
   }, 1000);
 
   $('button[name="start"]').on('click', () => {
+    console.log(remainingRuns);
     $('button[name="start"]').toggleClass('hide');
     $('button[name="pause"]').toggleClass('hide');
     timer.start();
