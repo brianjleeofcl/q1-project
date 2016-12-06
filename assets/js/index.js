@@ -84,9 +84,9 @@
 
         if (obj.value === inputData.rule.value && obj.suit === inputData.rule.suit) {
           card.condition = true;
-        } else if (typeof inputData.suit === 'undefined' && obj.value === inputData.value) {
+        } else if (typeof inputData.rule.suit === 'undefined' && obj.value === inputData.rule.value) {
           card.condition = true;
-        } else if (typeof inputData.value === 'undefined' && obj.suit === inputData.suit) {
+        } else if (typeof inputData.rule.value === 'undefined' && obj.suit === inputData.rule.suit) {
           card.condition = true;
         } else {
           card.condition = false;
@@ -245,4 +245,11 @@
     timer.stop();
   });
 
+  $('.reset').on('click', () => {
+    $('#modal2').modal('open');
+  });
+
+  $('#reset').on('click', () => {
+    document.location.reload();
+  });
 })();

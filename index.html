@@ -151,12 +151,12 @@
               </div>
             </div>
             <div class="col s6 center-align">
-              <button class="btn" type="button" name="reset">reset</button>
+              <button class="reset btn" type="button">reset</button>
             </div>
           </div>
           <div class="row">
             <div class="center-align">
-              <button class="btn" type="button" name="reset">reset</button>
+              <button class="reset btn" type="button">reset</button>
               <a id="modal-btn1" href="#modal1" class="btn">Ready?</a>
             </div>
           </div>
@@ -213,7 +213,9 @@
             </div>
           </div>
           <div class="row">
-            <!-- reset button -->
+            <div class="col s6 right-align">
+              <button class="reset btn" type="button">reset</button>
+            </div>
             <!-- run again button -->
           </div>
         </div>
@@ -226,8 +228,18 @@
           </ul>
         </div>
         <div class="modal-footer">
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Reset</a>
+          <a class="reset modal-action modal-close waves-effect waves-green btn-flat">Reset</a>
           <a id="submit-input" class="modal-action modal-close waves-effect waves-green btn-flat">Ready!</a>
+        </div>
+      </div>
+      <div id="modal2" class="modal">
+        <div class="modal-content">
+          <h4>Reset!</h4>
+          <p>Resetting all. Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+          <a class="modal-action modal-close waves-effect waves-green btn-flat">Nope!</a>
+          <a id="reset" class="modal-action modal-close waves-effect waves-green btn-flat">Yes!</a>
         </div>
       </div>
     </main>
