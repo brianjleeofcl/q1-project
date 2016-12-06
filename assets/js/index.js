@@ -13,11 +13,7 @@
   };
 
   const numberValidate = function($input) {
-    if ($input.val() !== '') {
-      return true;
-    } else {
-      return false;
-    }
+    return $input.val() !== '' && parseInt($input.val()) > 0;
   };
 
   const inputValidation = function($target) {
@@ -34,11 +30,7 @@
       radioVal.push($(element).val());
     });
 
-    if (radioCat.length !== 0 && radioVal.length === radioCat.length) {
-      return true;
-    } else {
-      return false;
-    }
+    return radioCat.length !== 0 && radioVal.length === radioCat.length;
   };
 
   const displayNextQ = function($target) {
@@ -60,7 +52,6 @@
     });
 
     remainingRuns = parseInt(inputData.q4);
-    console.log(inputData);
   };
 
   const drawDeck = function(id, deckCount) {
@@ -84,11 +75,14 @@
 
         if (obj.value === inputData.rule.value && obj.suit === inputData.rule.suit) {
           card.condition = true;
-        } else if (typeof inputData.rule.suit === 'undefined' && obj.value === inputData.rule.value) {
+        }
+        else if (typeof inputData.rule.suit === 'undefined' && obj.value === inputData.rule.value) {
           card.condition = true;
-        } else if (typeof inputData.rule.value === 'undefined' && obj.suit === inputData.rule.suit) {
+        }
+        else if (typeof inputData.rule.value === 'undefined' && obj.suit === inputData.rule.suit) {
           card.condition = true;
-        } else {
+        }
+        else {
           card.condition = false;
         }
 
@@ -121,10 +115,12 @@
     if (arr.length === 2) {
       $('#calculation').text('1/4 x 1/13');
       $('#calc-prob').text('1/52 = 1.92%');
-    } else if (arr.length === 1 && arr.includes('suit')) {
+    }
+    else if (arr.length === 1 && arr.includes('suit')) {
       $('#calculation').text('1/4');
       $('#calc-prob').text('1/4 = 25.00%');
-    } else if (arr.length === 1 && arr.includes('value')) {
+    }
+    else if (arr.length === 1 && arr.includes('value')) {
       $('#calculation').text('1/13');
       $('#calc-prob').text('1/13 = 7.69%');
     }
@@ -142,7 +138,6 @@
   });
 
   const modalText = function() {
-    const dataArr = Object.values(inputData);
     const ruleArr = Object.keys(inputData.rule);
 
     $('#modal1 ul.modal-rules').append($('<li>').text(`Creating a deck with ${inputData.q1} standard deck`));
@@ -150,9 +145,11 @@
 
     if (ruleArr.length === 2) {
       $('li.modal-condition').text(`Looking for ${inputData.rule.value} of ${inputData.rule.suit}.`);
-    } else if (ruleArr.length === 1 && ruleArr.includes('suit')) {
+    }
+    else if (ruleArr.length === 1 && ruleArr.includes('suit')) {
       $('li.modal-condition').text(`Looking for any ${inputData.rule[ruleArr[0]]}.`);
-    } else if (ruleArr.length === 1 && ruleArr.includes('value')) {
+    }
+    else if (ruleArr.length === 1 && ruleArr.includes('value')) {
       $('li.modal-condition').text(`Looking for all ${inputData.rule[ruleArr[0]]} of any suit.`);
     }
 
@@ -181,6 +178,7 @@
   });
 
   $('#submit-input').on('click', () => {
+    $('#rule-page').text('RULE: ' + $('li.modal-condition').text())
     $('#input').css('min-height', 0);
     $('#input').slideUp();
     generateDeck(inputData);
@@ -189,14 +187,15 @@
 
   const drawCard = function() {
     const len = deck.length;
+
     return deck[Math.floor(Math.random() * len)];
   };
 
   const updateMeasurement = function(obj) {
     if (obj.condition) {
-      currentState.occurrence++;
+      currentState.occurrence += 1;
     }
-    currentState.total++;
+    currentState.total += 1;
   };
 
   const renderCard = function() {
@@ -215,34 +214,47 @@
     $('.mes-pr').text((currentState.occurrence / currentState.total * 100).toFixed(2));
   };
 
-  const execution = function(fn, duration){
+  let running = false;
+
+  const execution = function(fn){
     let intervalID;
 
     return {
-      start: function() {
+      start(duration) {
         intervalID = setInterval(fn, duration);
-        console.log(remainingRuns);
+        running = true;
       },
       stop() {
         clearInterval(intervalID);
+        running = false;
       }
     };
   };
 
   const timer = execution(() => {
     renderCard();
-    remainingRuns--;
-    console.log(remainingRuns);
+    remainingRuns -= 1;
     if (remainingRuns === 0) {
+      $('button[name="pause"]').prop('disabled', true);
       timer.stop();
     }
-  }, 1000);
+  });
+
+  $('#speed').on('change', () => {
+    if (running === true) {
+      const speed = parseFloat($('#speed').val()) * 1000;
+
+      timer.stop();
+      timer.start(speed);
+    }
+  });
 
   $('button[name="start"]').on('click', () => {
-    console.log(remainingRuns);
+    const speed = parseFloat($('#speed').val()) * 1000;
+
     $('button[name="start"]').toggleClass('hide');
     $('button[name="pause"]').toggleClass('hide');
-    timer.start();
+    timer.start(speed);
   });
 
   $('button[name="pause"]').on('click', () => {
