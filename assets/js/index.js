@@ -6,6 +6,7 @@
 
   let deck = [];
   let inputData = {};
+  let maxRun = 0;
 
   const numberValidate = function($input) {
     if ($input.val() !== '') {
@@ -41,7 +42,7 @@
     $target.find('input').prop('disabled', true);
     $target.find('button').prop('disabled', true);
     $target.next().toggleClass('current hide');
-  }
+  };
 
   const collectData = function() {
     inputData = {};
@@ -52,7 +53,10 @@
     $('.input-field').find('input:radio:checked').each((index, element) => {
       inputData[element.name] = element.value;
     })
-  }
+
+    maxRun = parseInt(inputData.q4)
+    console.log(maxRun);
+  };
 
   const drawDeck = function(id, deckCount) {
     const cardCount = deckCount * 52
@@ -136,4 +140,47 @@
     collectData();
     generateDeck(inputData);
   });
+
+  // const execution = function(runBool) {
+  //   let intervalID
+  //   if (runBool) {
+  //     intervalID = setInterval(() => {
+  //       console.log(maxRun);
+  //       maxRun --;
+  //     }, 1000)
+  //   } else {
+  //     clearInterval(intervalID);
+  //   }
+  // };
+
+  const execution = function(fn, duration){
+    let intervalID;
+
+    return {
+      start : function() {
+        intervalID = setInterval(fn, duration);
+      },
+      stop : function() {
+        clearInterval(intervalID);
+      }
+    }
+  }
+
+  const timer = execution(() => {
+    console.log(maxRun);
+    maxRun --;
+  }, 1000);
+
+  $('button[name="start"]').on('click', () => {
+    $('button[name="start"]').toggleClass('hide')
+    $('button[name="pause"]').toggleClass('hide')
+    timer.start();
+  });
+
+  $('button[name="pause"]').on('click', () => {
+    $('button[name="start"]').toggleClass('hide');
+    $('button[name="pause"]').toggleClass('hide');
+    timer.stop();
+  });
+
 })();
