@@ -77,7 +77,6 @@
       }
 
       deck = result.cards.map((obj) => {
-        console.log(obj);
         const card = {};
 
         card.code = obj.code;
@@ -142,6 +141,24 @@
     }
   });
 
+  const modalText = function() {
+    const dataArr = Object.values(inputData);
+    const ruleArr = Object.keys(inputData.rule);
+
+    $('#modal1 ul.modal-rules').append($('<li>').text(`Creating a deck with ${inputData.q1} standard deck`));
+    $('#modal1 ul.modal-rules').append($('<li>').addClass('modal-condition'));
+
+    if (ruleArr.length === 2) {
+      $('li.modal-condition').text(`Looking for ${inputData.rule.value} of ${inputData.rule.suit}.`);
+    } else if (ruleArr.length === 1 && ruleArr.includes('suit')) {
+      $('li.modal-condition').text(`Looking for any ${inputData.rule[ruleArr[0]]}.`);
+    } else if (ruleArr.length === 1 && ruleArr.includes('value')) {
+      $('li.modal-condition').text(`Looking for all ${inputData.rule[ruleArr[0]]} of any suit.`);
+    }
+
+    $('#modal1 ul.modal-rules').append($('<li>').text(`Repeating ${inputData.q4} times.`));
+  };
+
   $('select.rules').on('change', () => {
     const selected = $('select.rules').val();
 
@@ -158,10 +175,14 @@
     }
   });
 
+  $('#modal-btn1').on('click', () => {
+    collectData();
+    modalText();
+  });
+
   $('#submit-input').on('click', () => {
     $('#input').css('min-height', 0);
     $('#input').slideUp();
-    collectData();
     generateDeck(inputData);
     displayCalculation(inputData.rule);
   });
