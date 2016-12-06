@@ -7,6 +7,10 @@
   let deck = [];
   let inputData = {};
   let maxRun = 0;
+  let currentState = {
+    occurrence: 0,
+    total:0
+  }
 
   const numberValidate = function($input) {
     if ($input.val() !== '') {
@@ -141,17 +145,28 @@
     generateDeck(inputData);
   });
 
-  // const execution = function(runBool) {
-  //   let intervalID
-  //   if (runBool) {
-  //     intervalID = setInterval(() => {
-  //       console.log(maxRun);
-  //       maxRun --;
-  //     }, 1000)
-  //   } else {
-  //     clearInterval(intervalID);
-  //   }
-  // };
+  const drawCard = function() {
+    const len = deck.length;
+    return deck[Math.floor(Math.random() * len)]
+  };
+
+  const updateMeasurement = function(obj) {
+    if (obj.condition){
+      currentState.occurrence++;
+    }
+    currentState.total++;
+  };
+
+  const renderCard = function() {
+    const card = drawCard();
+
+    $('#card-image img').attr('src', card.images.png);
+
+    updateMeasurement(card);
+    $('.mes-oc').text(currentState.occurrence);
+    $('.mes-to').text(currentState.total);
+    $('.mes-pr').text((currentState.occurrence / currentState.total * 100).toFixed(2))
+  };
 
   const execution = function(fn, duration){
     let intervalID;
@@ -167,7 +182,7 @@
   }
 
   const timer = execution(() => {
-    console.log(maxRun);
+    renderCard()
     maxRun --;
   }, 1000);
 
