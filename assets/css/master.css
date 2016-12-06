@@ -14,6 +14,11 @@ footer.page-footer{
   padding-top: 0;
 }
 
+img.occurrence {
+  background: black;
+  mix-blend-mode: difference;
+}
+
 .control-inputs button {
   margin-bottom: 3px;
 }
