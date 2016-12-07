@@ -113,16 +113,16 @@
     const arr = Object.keys(obj);
 
     if (arr.length === 2) {
-      $('#calculation').text('1/4 x 1/13');
-      $('#calc-prob').text('1/52 = 1.92%');
+      $('#calculation').text('$$\\frac{1}{4} \\times \\frac{1}{13}$$');
+      $('#calc-prob').text('$$\\frac{1}{52} = 1.92\\%$$');
     }
     else if (arr.length === 1 && arr.includes('suit')) {
-      $('#calculation').text('1/4');
-      $('#calc-prob').text('1/4 = 25.00%');
+      $('#calculation').text('$$\\frac{1}{4}$$');
+      $('#calc-prob').text('$$\\frac{1}{4} = 25.00\\%$$');
     }
     else if (arr.length === 1 && arr.includes('value')) {
-      $('#calculation').text('1/13');
-      $('#calc-prob').text('1/13 = 7.69%');
+      $('#calculation').text('$$\\frac{1}{13}$$');
+      $('#calc-prob').text('$$\\frac{1}{13} = 7.69\\%');
     }
   };
 
@@ -178,11 +178,14 @@
   });
 
   $('#submit-input').on('click', () => {
-    $('#rule-page').text('RULE: ' + $('li.modal-condition').text())
+    $('#rule-page').text('RULE: ' + $('li.modal-condition').text());
     $('#input').css('min-height', 0);
     $('#input').slideUp();
     generateDeck(inputData);
-    displayCalculation(inputData.rule);
+    MathJax.Hub.Queue(
+      [displayCalculation, inputData.rule],
+      ['Typeset', MathJax.Hub]
+    );
   });
 
   const drawCard = function() {
@@ -200,8 +203,17 @@
 
   const updateProgressBar = function() {
     const progress = currentState.total / inputData.q4 * 100;
-    $('#progress').attr('style',`width: ${progress}%`);
-  }
+
+    $('#progress').attr('style', `width: ${progress}%`);
+  };
+
+  const measureProbability = function(obj) {
+    const percent = (currentState.occurrence / currentState.total * 100).toFixed(2);
+
+    $('.mes-oc').text(obj.occurrence);
+    $('.mes-to').text(obj.total);
+    $('#mes-prob').text(`$$\\frac{${obj.occurrence}}{${obj.total}} = ${percent}\\%$$`);
+  };
 
   const renderCard = function() {
     const card = drawCard();
@@ -214,15 +226,16 @@
     }
 
     updateMeasurement(card);
-    $('.mes-oc').text(currentState.occurrence);
-    $('.mes-to').text(currentState.total);
-    $('.mes-pr').text((currentState.occurrence / currentState.total * 100).toFixed(2));
+    MathJax.Hub.Queue(
+      [measureProbability, currentState],
+      ['Typeset', MathJax.Hub, 'mes-prob']
+    );
     updateProgressBar();
   };
 
   let running = false;
 
-  const execution = function(fn){
+  const execution = function(fn) {
     let intervalID;
 
     return {
@@ -247,7 +260,7 @@
   });
 
   $('#speed').on('change', () => {
-    if (running === true) {
+    if (running) {
       const speed = parseFloat($('#speed').val()) * 1000;
 
       timer.stop();

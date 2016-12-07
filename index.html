@@ -9,8 +9,8 @@
 
     <script defer type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <script defer type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <script defer src="assets/js/index.js" charset="utf-8"></script>
-
   </head>
   <body>
     <header>
@@ -207,9 +207,7 @@
                   <h6>Total run: <span class="mes-to"></span></h6>
                 </div>
                 <div class="right-align">
-                  <h5>
-                    <span class="mes-oc"></span> / <span class="mes-to"></span> = <span class="mes-pr"></span>%
-                  </h5>
+                  <h5 id="mes-prob"></h5>
                 </div>
                 <div class="progress">
                   <div id="progress" class="determinate" style="width: 0%"></div>
