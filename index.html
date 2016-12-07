@@ -10,7 +10,7 @@
     <script defer type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
     <script defer src="assets/js/index.js" charset="utf-8"></script>
-
+    <script defer src="assets/js/or-condition.js" charset="utf-8"></script>
   </head>
   <body>
     <header>
@@ -48,9 +48,9 @@
                 <button class="btn" type="submit" name="button">submit</button>
               </div>
             </div>
-            <div class="col s12 hide">
+            <div id="condition" class="col s12 hide">
               <h6>3: What are the rules for the drawn cards?</h6>
-              <div class="row">
+              <div class="row conditions-input">
                 <div class="col s3 input-field">
                   <select multiple class="rules">
                     <option value="" disabled selected>Options</option>
@@ -134,6 +134,9 @@
                   </div>
                 </div>
               </div>
+              <div class="row prepend-target">
+                <a id="add-condition">Add an independent condition</a>
+              </div>
               <div class="row">
                 <div class="col s12 center-align">
                   <button class="btn" type="submit" name="button">submit</button>
@@ -165,18 +168,17 @@
       <div class="row">
         <div class="col s12 offset-m1 m10">
           <div class="row">
-            <h5 id="rule-page" class="center-align"></h5>
+            <h5 class="center-align"><span id="rule-page"></span></h5>
           </div>
           <div class="row">
             <h3>Calculated Probability</h3>
             <div class="container row">
               <div class="col s8">
-                <h5 id="calculation"></h5>
+                <h5><span id="calculation"></span></h5>
               </div>
               <div class="col s4">
                 <div class="right-align">
-                  <h5 id="calc-prob">
-                  </h5>
+                  <h5><span id="calc-prob"></span></h5>
                 </div>
               </div>
             </div>
