@@ -198,6 +198,11 @@
     currentState.total += 1;
   };
 
+  const updateProgressBar = function() {
+    const progress = currentState.total / inputData.q4 * 100;
+    $('#progress').attr('style',`width: ${progress}%`);
+  }
+
   const renderCard = function() {
     const card = drawCard();
 
@@ -212,6 +217,7 @@
     $('.mes-oc').text(currentState.occurrence);
     $('.mes-to').text(currentState.total);
     $('.mes-pr').text((currentState.occurrence / currentState.total * 100).toFixed(2));
+    updateProgressBar();
   };
 
   let running = false;
