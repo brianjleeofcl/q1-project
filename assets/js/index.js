@@ -36,8 +36,10 @@
   const displayNextQ = function($target) {
     $target.toggleClass('current grey-text');
     $target.find('input').prop('disabled', true);
-    $target.find('button').prop('disabled', true);
-    $target.next().toggleClass('current hide');
+    $target.find('button').toggleClass('hide');
+    $target.next().toggleClass('current grey-text');
+    $target.next().find('input').prop('disabled', false);
+    $target.next().find('button').toggleClass('hide');
   };
 
   const collectData = function() {
@@ -51,7 +53,7 @@
       inputData.rule[element.name] = element.value;
     });
 
-    remainingRuns = parseInt(inputData.q4);
+    remainingRuns = parseInt(inputData.repeats);
   };
 
   const drawDeck = function(id, deckCount) {
@@ -94,7 +96,7 @@
   const generateDeck = function(data) {
     const $xhr = $.ajax({
       method: 'GET',
-      url: `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${data.q1}`,
+      url: `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`,
       dataType: 'json'
     });
 
@@ -105,7 +107,7 @@
 
       const deckID = result.deck_id;
 
-      drawDeck(deckID, data.q1);
+      drawDeck(deckID, 1);
     });
   };
 
@@ -140,7 +142,7 @@
   const modalText = function() {
     const ruleArr = Object.keys(inputData.rule);
 
-    $('#modal1 ul.modal-rules').append($('<li>').text(`Creating a deck with ${inputData.q1} standard deck`));
+    $('#modal1 ul.modal-rules').append($('<li>').text(`Creating a standard deck of cards`));
     $('#modal1 ul.modal-rules').append($('<li>').addClass('modal-condition'));
 
     if (ruleArr.length === 2) {
@@ -153,7 +155,7 @@
       $('li.modal-condition').text(`Looking for all ${inputData.rule[ruleArr[0]]} of any suit.`);
     }
 
-    $('#modal1 ul.modal-rules').append($('<li>').text(`Repeating ${inputData.q4} times.`));
+    $('#modal1 ul.modal-rules').append($('<li>').text(`Repeating ${inputData.repeats} times.`));
   };
 
   $('select.rules').on('change', () => {
@@ -199,7 +201,7 @@
   };
 
   const updateProgressBar = function() {
-    const progress = currentState.total / inputData.q4 * 100;
+    const progress = currentState.total / inputData.repeats * 100;
     $('#progress').attr('style',`width: ${progress}%`);
   }
 
