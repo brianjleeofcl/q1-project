@@ -212,7 +212,7 @@
 
     $('.mes-oc').text(obj.occurrence);
     $('.mes-to').text(obj.total);
-    $('#mes-prob').text(`$$\\frac{${obj.occurrence}}{${obj.total}} = ${percent}\\%$$`);
+    $('#mes-prob').text(`$$\\frac{${obj.occurrence}}{${obj.total}} = ${percent}\\%$$`)
   };
 
   const renderCard = function() {
@@ -226,9 +226,17 @@
     }
 
     updateMeasurement(card);
+    // measureProbability(currentState)
+    // $('#mes-prob').addClass('hide')
     MathJax.Hub.Queue(
+      () => {
+        document.getElementById('mes-prob').style.visibility = "hidden"
+      },
       [measureProbability, currentState],
-      ['Typeset', MathJax.Hub, 'mes-prob']
+      ['Typeset', MathJax.Hub, 'mes-prob'],
+      () => {
+        document.getElementById('mes-prob').style.visibility = ""
+      }
     );
     updateProgressBar();
   };
