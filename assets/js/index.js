@@ -88,27 +88,28 @@
     else if (string === '1/13') {
       return 4;
     }
-  }
+  };
 
   const displayCalculation = function(array) {
     const fracArray = array.map((element) => {
       return convertFraction(element);
     });
     const sum = fracArray.map((item) => {
-      return sumValue(item)
+      return sumValue(item);
     }).reduce((num1, num2) => {
-      return num1 + num2
+      return num1 + num2;
     }, 0);
     const union = sum - instance;
     const probability = instance / 52 * 100;
 
     if (union === 0) {
       $('#calculation').text(fracArray.join(' + '));
-    } else {
-      $('#calculation').text(fracArray.join(' + ') + ` - ${union}/52`);
+    }
+    else {
+      $('#calculation').text(`${fracArray.join(' + ')} - ${union}/52`);
     }
 
-    $('#calc-prob').text(`${instance} / 52 = ${probability.toFixed(2)}%`)
+    $('#calc-prob').text(`${instance} / 52 = ${probability.toFixed(2)}%`);
   };
 
   const drawDeck = function(id) {
