@@ -24,7 +24,9 @@
     }
 
     const radioVal = [];
-    const radioCat = $('select.rules').val();
+    const radioCat = $('select.rules').map((i, element) => {
+      return $(element).val();
+    });
 
     $('input:radio:enabled:checked').each((index, element) => {
       radioVal.push($(element).val());
@@ -37,6 +39,7 @@
     $target.toggleClass('current grey-text');
     $target.find('input').prop('disabled', true);
     $target.find('button').toggleClass('hide');
+    $target.find('a').toggleClass('hide');
     $target.next().toggleClass('current grey-text');
     $target.next().find('input').prop('disabled', false);
     $target.next().find('button').toggleClass('hide');
@@ -44,13 +47,17 @@
 
   const collectData = function() {
     inputData = {};
-    inputData.rule = {};
+    inputData.rule = [];
 
     $('.input-field').find('input[type="number"]').each((index, element) => {
       inputData[element.id] = element.value;
     });
     $('.input-field').find('input:radio:checked').each((index, element) => {
-      inputData.rule[element.name] = element.value;
+      const arrIndex = parseInt(element.name.match(/\d+/));
+      const type = element.name.match(/\w+/);
+
+      inputData.rule[arrIndex] = {};
+      inputData.rule[arrIndex][type] = element.value;
     });
 
     remainingRuns = parseInt(inputData.repeats);
@@ -74,22 +81,23 @@
 
         card.code = obj.code;
         card.images = obj.images;
+        card.condition = false;
 
-        if (obj.value === inputData.rule.value && obj.suit === inputData.rule.suit) {
-          card.condition = true;
-        }
-        else if (typeof inputData.rule.suit === 'undefined' && obj.value === inputData.rule.value) {
-          card.condition = true;
-        }
-        else if (typeof inputData.rule.value === 'undefined' && obj.suit === inputData.rule.suit) {
-          card.condition = true;
-        }
-        else {
-          card.condition = false;
+        for (const ruleObj of inputData.rule) {
+          if (obj.value === ruleObj.value && obj.suit === ruleObj.suit) {
+            card.condition = true;
+          }
+          else if (typeof ruleObj.suit === 'undefined' && obj.value === ruleObj.value) {
+            card.condition = true;
+          }
+          else if (typeof ruleObj.value === 'undefined' && obj.suit === ruleObj.suit) {
+            card.condition = true;
+          }
         }
 
         return card;
       });
+      console.log(deck);
     });
   };
 
@@ -157,22 +165,6 @@
 
     $('#modal1 ul.modal-rules').append($('<li>').text(`Repeating ${inputData.repeats} times.`));
   };
-
-  $('select.rules').on('change', () => {
-    const selected = $('select.rules').val();
-
-    if (selected.includes('suit')) {
-      $('.suits input[type="radio"]').prop('disabled', false);
-    } else {
-      $('.suits input[type="radio"]').prop('disabled', true);
-    }
-
-    if (selected.includes('value')) {
-      $('.values input[type="radio"]').prop('disabled', false);
-    } else {
-      $('.values input[type="radio"]').prop('disabled', true);
-    }
-  });
 
   $('#modal-btn1').on('click', () => {
     collectData();

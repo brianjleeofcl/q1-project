@@ -23,6 +23,11 @@ img.occurrence {
   margin-bottom: 3px;
 }
 
+.radio label {
+  padding-left: 23px !important;
+  padding-right: 5px;
+}
+
 #input {
   z-index: 2;
   position: absolute;
@@ -35,9 +40,4 @@ img.occurrence {
 
 #card-image img {
   width: 100%;
-}
-
-#rule-radio label {
-  padding-left: 23px;
-  padding-right: 5px;
 }
