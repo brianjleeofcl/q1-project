@@ -14,7 +14,8 @@
   let instance = 0;
 
   const numberValidate = function($input) {
-    const num = parseInt($input.val())
+    const num = parseInt($input.val());
+
     return $input.val() !== '' && num > 0 && num <= 100000;
   };
 
@@ -338,17 +339,32 @@
 
     $('button[name="start"]').toggleClass('hide');
     $('button[name="pause"]').toggleClass('hide');
+    $('button[name="next"]').prop('disabled', true);
     timer.start(speed);
   });
 
   $('button[name="pause"]').on('click', () => {
     $('button[name="start"]').toggleClass('hide');
     $('button[name="pause"]').toggleClass('hide');
+    $('button[name="next"]').prop('disabled', false);
     timer.stop();
+  });
+
+  $('button[name="next"]').on('click', () => {
+    renderCard();
+    remainingRuns -= 1;
+    if (remainingRuns === 0) {
+      $('button[name="start"]').prop('disabled', true);
+      $('button[name="finish"]').prop('disabled', true);
+      $('button[name="next"]').prop('disabled', true);
+    }
   });
 
   $('button[name="finish"]').on('click', () => {
     drawLoop();
+    $('button[name="start"]').prop('disabled', true);
+    $('button[name="finish"]').prop('disabled', true);
+    $('button[name="next"]').prop('disabled', true);
   });
 
   $('.reset').on('click', () => {
