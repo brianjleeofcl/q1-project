@@ -9,8 +9,9 @@
 
     <script defer type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-    <script defer src="assets/js/index.js" charset="utf-8"></script>
+    <script defer src="assets/js/radio-button-data.js" charset="utf-8"></script>
     <script defer src="assets/js/or-condition.js" charset="utf-8"></script>
+    <script defer src="assets/js/index.js" charset="utf-8"></script>
   </head>
   <body>
     <header>
@@ -29,93 +30,11 @@
           </p>
           <div class="row question-field">
             <div class="col s12 current">
-              <h6>What are the rules for the drawn cards?</h6>
-              <div class="row">
-                <div class="col s3 input-field">
-                  <select multiple class="rules">
-                    <option value="" disabled selected>Options</option>
-                    <option value="suit">suit</option>
-                    <option value="value">value</option>
-                  </select>
-                  <label>Choose suit, value or both</label>
+              <h5>What are the rules for the drawn cards?</h5>
+              <div class="row" id="insert-before">
+                <div class="container center-align">
+                  <a id="add-condition">Add an independent condition</a>
                 </div>
-                <div class="col s9 input-field rules" id="rule-radio">
-                  <div class="suits">
-                    <span>
-                      <input disabled name="suit" type="radio" class="filled-in" id="spade" value="SPADES">
-                      <label for="spade">Spades</label>
-                    </span>
-                    <span>
-                      <input disabled name="suit"  type="radio" class="filled-in" id="heart" value="HEARTS">
-                      <label for="heart">Hearts</label>
-                    </span>
-                    <span>
-                      <input disabled name="suit" type="radio" class="filled-in" id="club" value="CLUBS">
-                      <label for="club">Clubs</label>
-                    </span>
-                    <span>
-                      <input disabled name="suit" type="radio" class="filled-in" id="diamond" value="DIAMONDS">
-                      <label for="diamond">Diamonds</label>
-                    </span>
-                  </div>
-                  <div class="values">
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="ace" value="ACE">
-                      <label for="ace">A</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="two" value="2">
-                      <label for="two">2</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="three" value="3">
-                      <label for="three">3</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="four" value="4">
-                      <label for="four">4</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="five" value="5">
-                      <label for="five">5</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="six" value="6">
-                      <label for="six">6</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="seven" value="7">
-                      <label for="seven">7</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="eight" value="8">
-                      <label for="eight">8</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="nine" value="9">
-                      <label for="nine">9</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="ten" value="10">
-                      <label for="ten">10</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="jack" value="JACK">
-                      <label for="jack">J</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="queen" value="QUEEN">
-                      <label for="queen">Q</label>
-                    </span>
-                    <span>
-                      <input disabled name="value" type="radio" class="filled-in" id="king" value="KING">
-                      <label for="king">K</label>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="row prepend-target">
-                <a id="add-condition">Add an independent condition</a>
               </div>
               <div class="row">
                 <div class="col s12 center-align">
@@ -124,7 +43,7 @@
               </div>
             </div>
             <div class="col s6 row grey-text">
-              <h6>Run how many times?</h6>
+              <h5>Run how many times?</h5>
               <div class="col s8 input-field">
                 <input type="number" id="repeats" value="" disabled>
                 <label for="repeats"></label>
