@@ -147,6 +147,10 @@
     }
   });
 
+  $('.last-btn').on('click', () => {
+    $('#submit-buttons').removeClass('hide')
+  })
+
   const modalText = function() {
     const ruleArr = Object.keys(inputData.rule);
 
