@@ -11,6 +11,7 @@
     occurrence: 0,
     total: 0
   };
+  let instance = 0;
 
   const numberValidate = function($input) {
     return $input.val() !== '' && parseInt($input.val()) > 0;
@@ -56,11 +57,58 @@
       const arrIndex = parseInt(element.name.match(/\d+/));
       const type = element.name.match(/\w+/);
 
-      inputData.rule[arrIndex] = {};
+      inputData.rule[arrIndex] = inputData.rule[arrIndex] || {};
       inputData.rule[arrIndex][type] = element.value;
     });
 
     remainingRuns = parseInt(inputData.repeats);
+  };
+
+  const convertFraction = function(obj) {
+    const arr = Object.keys(obj);
+
+    if (arr.length === 2) {
+      return '1/4 x 1/13';
+    }
+    else if (arr.length === 1 && arr.includes('suit')) {
+      return '1/4';
+    }
+    else if (arr.length === 1 && arr.includes('value')) {
+      return '1/13';
+    }
+  };
+
+  const sumValue = function(string) {
+    if (string === '1/4 x 1/13') {
+      return 1;
+    }
+    else if (string === '1/4') {
+      return 13;
+    }
+    else if (string === '1/13') {
+      return 4;
+    }
+  }
+
+  const displayCalculation = function(array) {
+    const fracArray = array.map((element) => {
+      return convertFraction(element);
+    });
+    const sum = fracArray.map((item) => {
+      return sumValue(item)
+    }).reduce((num1, num2) => {
+      return num1 + num2
+    }, 0);
+    const union = sum - instance;
+    const probability = instance / 52 * 100;
+
+    if (union === 0) {
+      $('#calculation').text(fracArray.join(' + '));
+    } else {
+      $('#calculation').text(fracArray.join(' + ') + ` - ${union}/52`);
+    }
+
+    $('#calc-prob').text(`${instance} / 52 = ${probability.toFixed(2)}%`)
   };
 
   const drawDeck = function(id) {
@@ -84,18 +132,29 @@
 
         for (const ruleObj of inputData.rule) {
           if (obj.value === ruleObj.value && obj.suit === ruleObj.suit) {
+            if (!card.condition) {
+              instance += 1;
+            }
             card.condition = true;
           }
           else if (typeof ruleObj.suit === 'undefined' && obj.value === ruleObj.value) {
+            if (!card.condition) {
+              instance += 1;
+            }
             card.condition = true;
           }
           else if (typeof ruleObj.value === 'undefined' && obj.suit === ruleObj.suit) {
+            if (!card.condition) {
+              instance += 1;
+            }
             card.condition = true;
           }
         }
 
         return card;
       });
+
+      displayCalculation(inputData.rule);
     });
   };
 
@@ -115,23 +174,6 @@
 
       drawDeck(deckID);
     });
-  };
-
-  const displayCalculation = function(obj) {
-    const arr = Object.keys(obj);
-
-    if (arr.length === 2) {
-      $('#calculation').text('1/4 x 1/13');
-      $('#calc-prob').text('1/52 = 1.92%');
-    }
-    else if (arr.length === 1 && arr.includes('suit')) {
-      $('#calculation').text('1/4');
-      $('#calc-prob').text('1/4 = 25.00%');
-    }
-    else if (arr.length === 1 && arr.includes('value')) {
-      $('#calculation').text('1/13');
-      $('#calc-prob').text('1/13 = 7.69%');
-    }
   };
 
   $('.question-field').on('click', '.current button', () => {
@@ -199,7 +241,6 @@
     $('#input').css('min-height', 0);
     $('#input').slideUp();
     generateDeck(inputData);
-    displayCalculation(inputData.rule);
   });
 
   const drawCard = function() {
