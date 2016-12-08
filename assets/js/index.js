@@ -24,7 +24,9 @@
     }
 
     const radioVal = [];
-    const radioCat = $('select.rules').val();
+    const radioCat = $('select.rules').map((i, element) => {
+      return $(element).val();
+    });
 
     $('input:radio:enabled:checked').each((index, element) => {
       radioVal.push($(element).val());
