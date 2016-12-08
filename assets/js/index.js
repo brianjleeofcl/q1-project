@@ -39,6 +39,7 @@
     $target.toggleClass('current grey-text');
     $target.find('input').prop('disabled', true);
     $target.find('button').toggleClass('hide');
+    $target.find('a').toggleClass('hide');
     $target.next().toggleClass('current grey-text');
     $target.next().find('input').prop('disabled', false);
     $target.next().find('button').toggleClass('hide');
@@ -80,22 +81,23 @@
 
         card.code = obj.code;
         card.images = obj.images;
+        card.condition = false;
 
-        if (obj.value === inputData.rule.value && obj.suit === inputData.rule.suit) {
-          card.condition = true;
-        }
-        else if (typeof inputData.rule.suit === 'undefined' && obj.value === inputData.rule.value) {
-          card.condition = true;
-        }
-        else if (typeof inputData.rule.value === 'undefined' && obj.suit === inputData.rule.suit) {
-          card.condition = true;
-        }
-        else {
-          card.condition = false;
+        for (const ruleObj of inputData.rule) {
+          if (obj.value === ruleObj.value && obj.suit === ruleObj.suit) {
+            card.condition = true;
+          }
+          else if (typeof ruleObj.suit === 'undefined' && obj.value === ruleObj.value) {
+            card.condition = true;
+          }
+          else if (typeof ruleObj.value === 'undefined' && obj.suit === ruleObj.suit) {
+            card.condition = true;
+          }
         }
 
         return card;
       });
+      console.log(deck);
     });
   };
 
