@@ -46,13 +46,17 @@
 
   const collectData = function() {
     inputData = {};
-    inputData.rule = {};
+    inputData.rule = [];
 
     $('.input-field').find('input[type="number"]').each((index, element) => {
       inputData[element.id] = element.value;
     });
     $('.input-field').find('input:radio:checked').each((index, element) => {
-      inputData.rule[element.name] = element.value;
+      const arrIndex = parseInt(element.name.match(/\d+/));
+      const type = element.name.match(/\w+/);
+
+      inputData.rule[arrIndex] = {};
+      inputData.rule[arrIndex][type] = element.value;
     });
 
     remainingRuns = parseInt(inputData.repeats);
