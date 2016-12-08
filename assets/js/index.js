@@ -11,6 +11,7 @@
     occurrence: 0,
     total: 0
   };
+  let instance = 0;
 
   const numberValidate = function($input) {
     return $input.val() !== '' && parseInt($input.val()) > 0;
@@ -56,18 +57,64 @@
       const arrIndex = parseInt(element.name.match(/\d+/));
       const type = element.name.match(/\w+/);
 
-      inputData.rule[arrIndex] = {};
+      inputData.rule[arrIndex] = inputData.rule[arrIndex] || {};
       inputData.rule[arrIndex][type] = element.value;
     });
 
     remainingRuns = parseInt(inputData.repeats);
   };
 
-  const drawDeck = function(id, deckCount) {
-    const cardCount = deckCount * 52;
+  const convertFraction = function(obj) {
+    const arr = Object.keys(obj);
+
+    if (arr.length === 2) {
+      return '1/4 x 1/13';
+    }
+    else if (arr.length === 1 && arr.includes('suit')) {
+      return '1/4';
+    }
+    else if (arr.length === 1 && arr.includes('value')) {
+      return '1/13';
+    }
+  };
+
+  const sumValue = function(string) {
+    if (string === '1/4 x 1/13') {
+      return 1;
+    }
+    else if (string === '1/4') {
+      return 13;
+    }
+    else if (string === '1/13') {
+      return 4;
+    }
+  }
+
+  const displayCalculation = function(array) {
+    const fracArray = array.map((element) => {
+      return convertFraction(element);
+    });
+    const sum = fracArray.map((item) => {
+      return sumValue(item)
+    }).reduce((num1, num2) => {
+      return num1 + num2
+    }, 0);
+    const union = sum - instance;
+    const probability = instance / 52 * 100;
+
+    if (union === 0) {
+      $('#calculation').text(fracArray.join(' + '));
+    } else {
+      $('#calculation').text(fracArray.join(' + ') + ` - ${union}/52`);
+    }
+
+    $('#calc-prob').text(`${instance} / 52 = ${probability.toFixed(2)}%`)
+  };
+
+  const drawDeck = function(id) {
     const $xhr = $.ajax({
       method: 'GET',
-      url: `https://deckofcardsapi.com/api/deck/${id}/draw/?count=${cardCount}`,
+      url: `https://deckofcardsapi.com/api/deck/${id}/draw/?count=52`,
       dataType: 'json'
     });
 
@@ -85,26 +132,36 @@
 
         for (const ruleObj of inputData.rule) {
           if (obj.value === ruleObj.value && obj.suit === ruleObj.suit) {
+            if (!card.condition) {
+              instance += 1;
+            }
             card.condition = true;
           }
           else if (typeof ruleObj.suit === 'undefined' && obj.value === ruleObj.value) {
+            if (!card.condition) {
+              instance += 1;
+            }
             card.condition = true;
           }
           else if (typeof ruleObj.value === 'undefined' && obj.suit === ruleObj.suit) {
+            if (!card.condition) {
+              instance += 1;
+            }
             card.condition = true;
           }
         }
 
         return card;
       });
-      console.log(deck);
+
+      displayCalculation(inputData.rule);
     });
   };
 
   const generateDeck = function(data) {
     const $xhr = $.ajax({
       method: 'GET',
-      url: `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`,
+      url: 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1',
       dataType: 'json'
     });
 
@@ -115,25 +172,8 @@
 
       const deckID = result.deck_id;
 
-      drawDeck(deckID, 1);
+      drawDeck(deckID);
     });
-  };
-
-  const displayCalculation = function(obj) {
-    const arr = Object.keys(obj);
-
-    if (arr.length === 2) {
-      $('#calculation').text('1/4 x 1/13');
-      $('#calc-prob').text('1/52 = 1.92%');
-    }
-    else if (arr.length === 1 && arr.includes('suit')) {
-      $('#calculation').text('1/4');
-      $('#calc-prob').text('1/4 = 25.00%');
-    }
-    else if (arr.length === 1 && arr.includes('value')) {
-      $('#calculation').text('1/13');
-      $('#calc-prob').text('1/13 = 7.69%');
-    }
   };
 
   $('.question-field').on('click', '.current button', () => {
@@ -142,32 +182,53 @@
 
     if (inputValidation($curQuestion)) {
       displayNextQ($curQuestion);
-    } else {
+    }
+    else {
       Materialize.toast('Please enter a valid response.', 2000);
     }
   });
 
   $('.last-btn').on('click', () => {
-    $('#submit-buttons').removeClass('hide')
-  })
+    $('#submit-buttons').removeClass('hide');
+  });
 
-  const modalText = function() {
-    const ruleArr = Object.keys(inputData.rule);
-
-    $('#modal1 ul.modal-rules').append($('<li>').text(`Creating a standard deck of cards`));
-    $('#modal1 ul.modal-rules').append($('<li>').addClass('modal-condition'));
+  const conditionText = function(inputObj, index) {
+    const ruleArr = Object.keys(inputObj);
+    const length = inputData.rule.length;
+    let string;
 
     if (ruleArr.length === 2) {
-      $('li.modal-condition').text(`Looking for ${inputData.rule.value} of ${inputData.rule.suit}.`);
+      string = ` ${inputObj.value} of ${inputObj.suit}`;
     }
     else if (ruleArr.length === 1 && ruleArr.includes('suit')) {
-      $('li.modal-condition').text(`Looking for any ${inputData.rule[ruleArr[0]]}.`);
+      string = ` ${inputObj.suit} of any value`;
     }
     else if (ruleArr.length === 1 && ruleArr.includes('value')) {
-      $('li.modal-condition').text(`Looking for all ${inputData.rule[ruleArr[0]]} of any suit.`);
+      string = ` ${inputObj.value} of any suit`;
     }
 
-    $('#modal1 ul.modal-rules').append($('<li>').text(`Repeating ${inputData.repeats} times.`));
+    if (index <= length - 3) {
+      string += ',';
+    }
+    else if (index === length - 2) {
+      string += ' or';
+    }
+
+    return string;
+  };
+
+  const modalText = function() {
+    const $modalRules = $('#modal1 ul.modal-rules');
+
+    $('<li>').text('Creating a standard deck of cards').appendTo($modalRules);
+    $('<li>').addClass('modal-condition').appendTo($modalRules);
+
+    const condition = inputData.rule.reduce((string, object, index) => {
+      return string + conditionText(object, index);
+    }, 'Looking for');
+
+    $('li.modal-condition').text(condition);
+    $('<li>').text(`Repeating ${inputData.repeats} times.`).appendTo($('#modal1 ul.modal-rules'));
   };
 
   $('#modal-btn1').on('click', () => {
@@ -176,11 +237,10 @@
   });
 
   $('#submit-input').on('click', () => {
-    $('#rule-page').text('RULE: ' + $('li.modal-condition').text())
+    $('#rule-page').text(`RULE: ${$('li.modal-condition').text()}`);
     $('#input').css('min-height', 0);
     $('#input').slideUp();
     generateDeck(inputData);
-    displayCalculation(inputData.rule);
   });
 
   const drawCard = function() {
@@ -198,8 +258,9 @@
 
   const updateProgressBar = function() {
     const progress = currentState.total / inputData.repeats * 100;
-    $('#progress').attr('style',`width: ${progress}%`);
-  }
+
+    $('#progress').attr('style', `width: ${progress}%`);
+  };
 
   const renderCard = function() {
     const card = drawCard();
@@ -207,7 +268,8 @@
     $('#card-image img').attr('src', card.images.png);
     if (card.condition) {
       $('#card-image img').addClass('occurrence');
-    } else {
+    }
+    else {
       $('#card-image img').removeClass('occurrence');
     }
 
@@ -220,7 +282,7 @@
 
   let running = false;
 
-  const execution = function(fn){
+  const execution = function(fn) {
     let intervalID;
 
     return {
