@@ -158,22 +158,6 @@
     $('#modal1 ul.modal-rules').append($('<li>').text(`Repeating ${inputData.repeats} times.`));
   };
 
-  $('select.rules').on('change', () => {
-    const selected = $('select.rules').val();
-
-    if (selected.includes('suit')) {
-      $('.suits input[type="radio"]').prop('disabled', false);
-    } else {
-      $('.suits input[type="radio"]').prop('disabled', true);
-    }
-
-    if (selected.includes('value')) {
-      $('.values input[type="radio"]').prop('disabled', false);
-    } else {
-      $('.values input[type="radio"]').prop('disabled', true);
-    }
-  });
-
   $('#modal-btn1').on('click', () => {
     collectData();
     modalText();
