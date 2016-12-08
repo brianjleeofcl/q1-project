@@ -244,6 +244,21 @@
     }
   });
 
+  const drawLoop = function() {
+    while (remainingRuns > 0) {
+      const card = drawCard();
+
+      updateMeasurement(card);
+      $('.mes-oc').text(currentState.occurrence);
+      $('.mes-to').text(currentState.total);
+      $('.mes-pr').text((currentState.occurrence / currentState.total * 100).toFixed(2));
+      updateProgressBar();
+      remainingRuns -= 1;
+    }
+    $('button[name="pause"]').prop('disabled', true);
+    timer.stop();
+  };
+
   $('#speed').on('change', () => {
     if (running === true) {
       const speed = parseFloat($('#speed').val()) * 1000;
@@ -265,6 +280,10 @@
     $('button[name="start"]').toggleClass('hide');
     $('button[name="pause"]').toggleClass('hide');
     timer.stop();
+  });
+
+  $('button[name="finish"]').on('click', () => {
+    drawLoop();
   });
 
   $('.reset').on('click', () => {
