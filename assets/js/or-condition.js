@@ -49,22 +49,29 @@
     }
   };
 
-  const newConditions = function() {
-    const $row = $('<div>').addClass('row');
+  const newConditions = function(killBool) {
+    const $row = $('<div>').addClass('row condition-row');
+    const $blank = $('<div>').addClass('col s1 right-align');
     const $select = $('<div>').addClass('col s3 input-field');
-    const $radio = $('<div>').addClass('col s9 input-field radio');
+    const $radio = $('<div>').addClass('col s8 input-field radio');
 
     $radio.addClass('rules-' + condCount);
     $select.append(selection());
     radioBuild($radio);
-    $row.append([$select, $radio]);
+    $row.append([$blank, $select, $radio]);
     $row.insertBefore($('#insert-before'));
     condCount += 1;
+
+    if (killBool) {
+      const $icon = $('<i>').addClass('material-icons grey-text delete').text('delete_forever')
+
+      $blank.append($icon);
+    }
   };
 
-  $(document).on('ready', newConditions());
+  $(document).on('ready', newConditions(false));
   $('#add-condition').on('click', () => {
-    newConditions();
+    newConditions(true);
     $('select').material_select();
   });
 
@@ -84,4 +91,12 @@
       $(`.${ruleSet} .values input[type="radio"]`).prop('disabled', true);
     }
   });
+
+  $('#input').on('mouseenter mouseleave', 'i.delete', () => {
+    $(event.target).toggleClass('grey-text red-text');
+  });
+
+  $('#input').on('click', 'i.delete', () => {
+    $(event.target).parents('.condition-row').remove();
+  })
 })();
