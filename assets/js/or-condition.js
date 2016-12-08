@@ -5,7 +5,7 @@
   const buttonData = radioOptions;
 
   const selection = function() {
-    const $select = $('<select>').attr('id', 'rules-' + condCount);
+    const $select = $('<select>').attr('id', `rules-${condCount}`);
     const $opt1 = $('<option>').attr('value', '');
     const $opt2 = $('<option>').attr('value', 'suit').text('suit');
     const $opt3 = $('<option>').attr('value', 'value').text('value');
@@ -21,6 +21,14 @@
     return [$select, $label];
   };
 
+  const radioText = function(text) {
+    if (['ACE', 'JACK', 'QUEEN', 'KING'].includes(text)) {
+      return text[0];
+    }
+
+    return text[0] + text.slice(1).toLowerCase();
+  };
+
   const radioBuild = function($parent) {
     for (const type of buttonData) {
       const $buttonRow = $('<div>').addClass(`${type.class}s`);
@@ -30,19 +38,17 @@
         const $input = $('<input>');
         const $label = $('<label>');
 
-        $input.prop('disabled', true).attr('type', 'radio').addClass('filled-in');
-        $input.attr('name', `${type.class}-${condCount}`);
-        $input.attr('id', `${obj.id}-${condCount}`);
-        $input.attr('value', obj.value);
+        $input.prop('disabled', true);
+        $input.addClass('filled-in');
+        $input.attr({
+          type: 'radio',
+          name: `${type.class}-${condCount}`,
+          id: `${obj.id}-${condCount}`,
+          value: obj.value
+        });
         $label.attr('for', `${obj.id}-${condCount}`);
-
-        if (['ACE', 'JACK', 'QUEEN', 'KING'].includes(obj.value)) {
-          $label.text(obj.value[0]);
-        } else {
-          $label.text(obj.value);
-        }
+        $label.text(radioText(obj.value));
         $span.append($input, $label);
-
         $buttonRow.append($span);
       }
       $buttonRow.appendTo($parent);
@@ -55,7 +61,7 @@
     const $select = $('<div>').addClass('col s3 input-field');
     const $radio = $('<div>').addClass('col s8 input-field radio');
 
-    $radio.addClass('rules-' + condCount);
+    $radio.addClass(`rules-${condCount}`);
     $select.append(selection());
     radioBuild($radio);
     $row.append([$blank, $select, $radio]);
@@ -63,8 +69,9 @@
     condCount += 1;
 
     if (killBool) {
-      const $icon = $('<i>').addClass('material-icons grey-text delete').text('delete_forever')
+      const $icon = $('<i>');
 
+      $icon.addClass('material-icons grey-text delete').text('delete_forever');
       $blank.append($icon);
     }
   };
@@ -77,11 +84,12 @@
 
   $('#input').on('change', 'select', () => {
     const ruleSet = $(event.target).parents('ul').siblings('select').attr('id');
-    const selected = $('#' + ruleSet).val();
+    const selected = $(`#${ruleSet}`).val();
 
     if (selected.includes('suit')) {
       $(`.${ruleSet} .suits input[type="radio"]`).prop('disabled', false);
-    } else {
+    }
+    else {
       $(`.${ruleSet} .suits input[type="radio"]`).prop({
         disabled: true,
         checked: false
@@ -90,7 +98,8 @@
 
     if (selected.includes('value')) {
       $(`.${ruleSet} .values input[type="radio"]`).prop('disabled', false);
-    } else {
+    }
+    else {
       $(`.${ruleSet} .values input[type="radio"]`).prop({
         disabled: true,
         checked: false
@@ -104,5 +113,5 @@
 
   $('#input').on('click', 'i.delete', () => {
     $(event.target).parents('.condition-row').remove();
-  })
+  });
 })();

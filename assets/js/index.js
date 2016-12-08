@@ -63,11 +63,10 @@
     remainingRuns = parseInt(inputData.repeats);
   };
 
-  const drawDeck = function(id, deckCount) {
-    const cardCount = deckCount * 52;
+  const drawDeck = function(id) {
     const $xhr = $.ajax({
       method: 'GET',
-      url: `https://deckofcardsapi.com/api/deck/${id}/draw/?count=${cardCount}`,
+      url: `https://deckofcardsapi.com/api/deck/${id}/draw/?count=52`,
       dataType: 'json'
     });
 
@@ -97,14 +96,13 @@
 
         return card;
       });
-      console.log(deck);
     });
   };
 
   const generateDeck = function(data) {
     const $xhr = $.ajax({
       method: 'GET',
-      url: `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`,
+      url: 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1',
       dataType: 'json'
     });
 
@@ -115,7 +113,7 @@
 
       const deckID = result.deck_id;
 
-      drawDeck(deckID, 1);
+      drawDeck(deckID);
     });
   };
 
@@ -142,32 +140,53 @@
 
     if (inputValidation($curQuestion)) {
       displayNextQ($curQuestion);
-    } else {
+    }
+    else {
       Materialize.toast('Please enter a valid response.', 2000);
     }
   });
 
   $('.last-btn').on('click', () => {
-    $('#submit-buttons').removeClass('hide')
-  })
+    $('#submit-buttons').removeClass('hide');
+  });
 
-  const modalText = function() {
-    const ruleArr = Object.keys(inputData.rule);
-
-    $('#modal1 ul.modal-rules').append($('<li>').text(`Creating a standard deck of cards`));
-    $('#modal1 ul.modal-rules').append($('<li>').addClass('modal-condition'));
+  const conditionText = function(inputObj, index) {
+    const ruleArr = Object.keys(inputObj);
+    const length = inputData.rule.length;
+    let string;
 
     if (ruleArr.length === 2) {
-      $('li.modal-condition').text(`Looking for ${inputData.rule.value} of ${inputData.rule.suit}.`);
+      string = ` ${inputObj.value} of ${inputObj.suit}`;
     }
     else if (ruleArr.length === 1 && ruleArr.includes('suit')) {
-      $('li.modal-condition').text(`Looking for any ${inputData.rule[ruleArr[0]]}.`);
+      string = ` ${inputObj.suit} of any value`;
     }
     else if (ruleArr.length === 1 && ruleArr.includes('value')) {
-      $('li.modal-condition').text(`Looking for all ${inputData.rule[ruleArr[0]]} of any suit.`);
+      string = ` ${inputObj.value} of any suit`;
     }
 
-    $('#modal1 ul.modal-rules').append($('<li>').text(`Repeating ${inputData.repeats} times.`));
+    if (index <= length - 3) {
+      string += ',';
+    }
+    else if (index === length - 2) {
+      string += ' or';
+    }
+
+    return string;
+  };
+
+  const modalText = function() {
+    const $modalRules = $('#modal1 ul.modal-rules');
+
+    $('<li>').text('Creating a standard deck of cards').appendTo($modalRules);
+    $('<li>').addClass('modal-condition').appendTo($modalRules);
+
+    const condition = inputData.rule.reduce((string, object, index) => {
+      return string + conditionText(object, index);
+    }, 'Looking for');
+
+    $('li.modal-condition').text(condition);
+    $('<li>').text(`Repeating ${inputData.repeats} times.`).appendTo($('#modal1 ul.modal-rules'));
   };
 
   $('#modal-btn1').on('click', () => {
@@ -176,7 +195,7 @@
   });
 
   $('#submit-input').on('click', () => {
-    $('#rule-page').text('RULE: ' + $('li.modal-condition').text())
+    $('#rule-page').text(`RULE: ${$('li.modal-condition').text()}`);
     $('#input').css('min-height', 0);
     $('#input').slideUp();
     generateDeck(inputData);
@@ -198,8 +217,9 @@
 
   const updateProgressBar = function() {
     const progress = currentState.total / inputData.repeats * 100;
-    $('#progress').attr('style',`width: ${progress}%`);
-  }
+
+    $('#progress').attr('style', `width: ${progress}%`);
+  };
 
   const renderCard = function() {
     const card = drawCard();
@@ -207,7 +227,8 @@
     $('#card-image img').attr('src', card.images.png);
     if (card.condition) {
       $('#card-image img').addClass('occurrence');
-    } else {
+    }
+    else {
       $('#card-image img').removeClass('occurrence');
     }
 
@@ -220,7 +241,7 @@
 
   let running = false;
 
-  const execution = function(fn){
+  const execution = function(fn) {
     let intervalID;
 
     return {
