@@ -14,7 +14,8 @@
   let instance = 0;
 
   const numberValidate = function($input) {
-    return $input.val() !== '' && parseInt($input.val()) > 0;
+    const num = parseInt($input.val())
+    return $input.val() !== '' && num > 0 && num <= 100000;
   };
 
   const inputValidation = function($target) {
@@ -221,6 +222,7 @@
   const modalText = function() {
     const $modalRules = $('#modal1 ul.modal-rules');
 
+    $modalRules.empty();
     $('<li>').text('Creating a standard deck of cards').appendTo($modalRules);
     $('<li>').addClass('modal-condition').appendTo($modalRules);
 
