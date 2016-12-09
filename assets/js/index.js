@@ -70,24 +70,24 @@
     const arr = Object.keys(obj);
 
     if (arr.length === 2) {
-      return '1/4 x 1/13';
+      return '\\frac{1}{4} \\times \\frac{1}{13}';
     }
     else if (arr.length === 1 && arr.includes('suit')) {
-      return '1/4';
+      return '\\frac{1}{4}';
     }
     else if (arr.length === 1 && arr.includes('value')) {
-      return '1/13';
+      return '\\frac{1}{13}';
     }
   };
 
   const sumValue = function(string) {
-    if (string === '1/4 x 1/13') {
+    if (string === '\\frac{1}{4} \\times \\frac{1}{13}') {
       return 1;
     }
-    else if (string === '1/4') {
+    else if (string === '\\frac{1}{4}') {
       return 13;
     }
-    else if (string === '1/13') {
+    else if (string === '\\frac{1}{13}') {
       return 4;
     }
   };
@@ -105,13 +105,13 @@
     const probability = instance / 52 * 100;
 
     if (union === 0) {
-      $('#calculation').text(fracArray.join(' + '));
+      $('#calculation').text(`$$${fracArray.join(' + ')}$$`);
     }
     else {
-      $('#calculation').text(`${fracArray.join(' + ')} - ${union}/52`);
+      $('#calculation').text(`$$${fracArray.join(' + ')} - \\frac{${union}}{52}$$`);
     }
 
-    $('#calc-prob').text(`${instance} / 52 = ${probability.toFixed(2)}%`);
+    $('#calc-prob').text(`$$= \\frac{${instance}}{52} = ${probability.toFixed(2)}\\%$$`);
   };
 
   const drawDeck = function(id) {
@@ -156,8 +156,11 @@
 
         return card;
       });
-
-      displayCalculation(inputData.rule);
+      
+      MathJax.Hub.Queue(
+        [displayCalculation, inputData.rule],
+        ['Typeset', MathJax.Hub]
+      );
     });
   };
 
@@ -179,22 +182,22 @@
     });
   };
 
-  const displayCalculation = function(obj) {
-    const arr = Object.keys(obj);
-
-    if (arr.length === 2) {
-      $('#calculation').text('$$\\frac{1}{4} \\times \\frac{1}{13}$$');
-      $('#calc-prob').text('$$\\frac{1}{52} = 1.92\\%$$');
-    }
-    else if (arr.length === 1 && arr.includes('suit')) {
-      $('#calculation').text('$$\\frac{1}{4}$$');
-      $('#calc-prob').text('$$\\frac{1}{4} = 25.00\\%$$');
-    }
-    else if (arr.length === 1 && arr.includes('value')) {
-      $('#calculation').text('$$\\frac{1}{13}$$');
-      $('#calc-prob').text('$$\\frac{1}{13} = 7.69\\%');
-    }
-  };
+  // const displayCalculation = function(obj) {
+  //   const arr = Object.keys(obj);
+  //
+  //   if (arr.length === 2) {
+  //     $('#calculation').text('$$\\frac{1}{4} \\times \\frac{1}{13}$$');
+  //     $('#calc-prob').text('$$\\frac{1}{52} = 1.92\\%$$');
+  //   }
+  //   else if (arr.length === 1 && arr.includes('suit')) {
+  //     $('#calculation').text('$$\\frac{1}{4}$$');
+  //     $('#calc-prob').text('$$\\frac{1}{4} = 25.00\\%$$');
+  //   }
+  //   else if (arr.length === 1 && arr.includes('value')) {
+  //     $('#calculation').text('$$\\frac{1}{13}$$');
+  //     $('#calc-prob').text('$$\\frac{1}{13} = 7.69\\%');
+  //   }
+  // };
 
   $('.question-field').on('click', '.current button', () => {
     event.preventDefault();
@@ -262,10 +265,7 @@
     $('#input').css('min-height', 0);
     $('#input').slideUp();
     generateDeck(inputData);
-    MathJax.Hub.Queue(
-      [displayCalculation, inputData.rule],
-      ['Typeset', MathJax.Hub]
-    );
+
   });
 
   const drawCard = function() {
