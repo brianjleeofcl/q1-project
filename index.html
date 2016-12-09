@@ -74,11 +74,27 @@
             <h3>Calculated Probability</h3>
             <div class="container row">
               <div class="col s8">
-                <h5><span id="calculation"></span></h5>
+                <div id="calculation"></div>
               </div>
               <div class="col s4">
-                <div class="right-align">
-                  <h5><span id="calc-prob"></span></h5>
+                <div class="math">
+                  <div>
+                    &equals;
+                  </div>
+                  <div class="frac">
+                    <div class="nom">
+                      <span id="inst"></span>
+                    </div>
+                    <div class="dnom">
+                      <span>52</span>
+                    </div>
+                  </div>
+                  <div>
+                    &equals;
+                  </div>
+                  <div id="calc-prob">
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -110,9 +126,22 @@
                   <h6>Total run: <span class="mes-to"></span></h6>
                 </div>
                 <div class="right-align">
-                  <h5>
-                    <span class="mes-oc"></span> / <span class="mes-to"></span> = <span class="mes-pr"></span>%
-                  </h5>
+                  <div class="math">
+                    <div class="frac">
+                      <div class="nom">
+                        <span class="mes-oc"></span>
+                      </div>
+                      <div class="dnom">
+                        <span class="mes-to"></span>
+                      </div>
+                    </div>
+                    <div id="equals" class="hide">
+                      &equals;
+                    </div>
+                    <div id="mes-pr">
+
+                    </div>
+                  </div>
                 </div>
                 <div class="progress">
                   <div id="progress" class="determinate" style="width: 0%"></div>

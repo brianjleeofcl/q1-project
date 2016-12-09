@@ -73,6 +73,5 @@
     });
 
     applyShade(rules);
-    console.log(rules);
   });
 })();
