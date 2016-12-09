@@ -25,6 +25,10 @@ img.occurrence {
   mix-blend-mode: difference;
 }
 
+a, button, i {
+  cursor: pointer;
+}
+
 .control-inputs button {
   margin-bottom: 3px;
 }
