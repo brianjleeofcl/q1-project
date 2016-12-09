@@ -55,7 +55,7 @@
     $('.input-field').find('input[type="number"]').each((index, element) => {
       inputData[element.id] = element.value;
     });
-    $('.input-field').find('input:radio:checked').each((index, element) => {
+    $('.input-field').find(':radio:checked').each((index, element) => {
       const arrIndex = parseInt(element.name.match(/\d+/));
       const type = element.name.match(/\w+/);
 

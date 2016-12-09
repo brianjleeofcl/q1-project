@@ -41,3 +41,19 @@ img.occurrence {
 #card-image img {
   width: 100%;
 }
+
+#preview-grid div {
+  display: flex;
+  justify-content: space-between;
+}
+
+#preview-grid img {
+  width: 7.5%;
+  padding: 0;
+  height: 7.5%;
+}
+
+#preview-grid img.shade{
+  background-color: black;
+  mix-blend-mode: difference;
+}

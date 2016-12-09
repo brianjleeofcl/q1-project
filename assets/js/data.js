@@ -6,14 +6,14 @@ const radioOptions = [
         id: 'spade',
         value: 'SPADES'
       }, {
+        id: 'heart',
+        value: 'HEARTS'
+      }, {
         id: 'club',
         value: 'CLUBS'
       }, {
         id: 'diamond',
         value: 'DIAMONDS'
-      }, {
-        id: 'heart',
-        value: 'HEARTS'
       }
     ]
   },
