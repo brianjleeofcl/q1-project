@@ -26,11 +26,25 @@ img.occurrence {
 }
 
 a, button, i {
+  font-family: 'Roboto';
   cursor: pointer;
 }
 
 .control-inputs button {
   margin-bottom: 3px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+}
+.brand-logo h1 {
+  font-size: 1.4em;
+  margin-top: 1rem;
+}
+
+nav .brand-logo i.material-icons{
+  margin: 0;
 }
 
 .radio label {

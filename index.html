@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Title for now</title>
+    <title>shuffle/repeat</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -18,7 +18,11 @@
     <header>
       <nav class="deep-purple">
         <div class="nav-wrapper">
-          <a class="brand-logo center">Title</a>
+          <a class="brand-logo center">
+            <i class="material-icons">shuffle</i>
+            shuffle/repeat
+            <i class="material-icons right">repeat</i>
+          </a>
         </div>
       </nav>
     </header>
@@ -27,7 +31,7 @@
         <div class="container">
           <h3 class="center-align">Configuration</h3>
           <p class="center-align">
-            [A quick description of how this works]
+            Please start by providing the conditions for outcomes.
           </p>
           <div class="row question-field">
             <div class="col s12 current">
@@ -39,7 +43,7 @@
               </div>
               <div class="row">
                 <div class="col s12 center-align">
-                  <button class="btn" type="submit" name="button">next</button>
+                  <button class="btn deep-purple" type="submit" name="button">next</button>
                 </div>
               </div>
             </div>
@@ -50,7 +54,7 @@
                 <label for="repeats"></label>
               </div>
               <div class="col s4">
-                <button class="btn hide last-btn" type="submit" name="button">next</button>
+                <button class="btn deep-purple hide last-btn" type="submit" name="button">next</button>
               </div>
             </div>
             <div id="preview-grid" class="col s6 pull-s6">
@@ -59,8 +63,8 @@
           </div>
           <div id="submit-buttons" class="row hide">
             <div class="center-align">
-              <button class="reset btn" type="button">reset</button>
-              <a id="modal-btn1" href="#modal1" class="btn">Ready?</a>
+              <button class="reset red btn" type="button">reset</button>
+              <button id="modal-btn1" data-target="modal1" class="btn green">Ready?</button>
             </div>
           </div>
         </div>
@@ -151,8 +155,8 @@
           </div>
           <div class="row">
             <div class="col s12 center-align">
-              <button class="reset btn" type="button">reset</button>
-              <button id="run-again" class="btn" type="button">run again</button>
+              <button class="reset btn red" type="button">reset</button>
+              <button id="run-again" class="btn green" type="button">run again</button>
             </div>
           </div>
         </div>
@@ -165,7 +169,7 @@
           </ul>
         </div>
         <div class="modal-footer">
-          <a class="reset modal-action modal-close waves-effect waves-green btn-flat">Reset</a>
+          <a class="left reset modal-action modal-close waves-effect waves-red btn-flat">Reset</a>
           <a id="submit-input" class="modal-action modal-close waves-effect waves-green btn-flat">Ready!</a>
         </div>
       </div>
@@ -175,15 +179,15 @@
           <p>Resetting all. Are you sure?</p>
         </div>
         <div class="modal-footer">
-          <a class="modal-action modal-close waves-effect waves-green btn-flat">Nope!</a>
-          <a id="reset" class="modal-action modal-close waves-effect waves-green btn-flat">Yes!</a>
+          <a class="left modal-action modal-close waves-effect waves-green btn-flat">Nope!</a>
+          <a id="reset" class="modal-action modal-close waves-effect waves-red btn-flat">Yes!</a>
         </div>
       </div>
     </main>
     <footer class="page-footer deep-purple">
       <div class="footer-copyright">
         <div class="container">
-          © 2014 Copyright Text
+          © Brian J. Lee, 2016
           <a class="grey-text text-lighten-4 right" href="#!">about</a>
         </div>
       </div>
