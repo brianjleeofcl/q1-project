@@ -11,9 +11,12 @@
     occurrence: 0,
     total: 0
   };
+  let instance = 0;
 
   const numberValidate = function($input) {
-    return $input.val() !== '' && parseInt($input.val()) > 0;
+    const num = parseInt($input.val());
+
+    return $input.val() !== '' && num > 0 && num <= 100000;
   };
 
   const inputValidation = function($target) {
@@ -24,7 +27,9 @@
     }
 
     const radioVal = [];
-    const radioCat = $('select.rules').val();
+    const radioCat = $('select.rules').map((i, element) => {
+      return $(element).val();
+    });
 
     $('input:radio:enabled:checked').each((index, element) => {
       radioVal.push($(element).val());
@@ -36,29 +41,83 @@
   const displayNextQ = function($target) {
     $target.toggleClass('current grey-text');
     $target.find('input').prop('disabled', true);
-    $target.find('button').prop('disabled', true);
-    $target.next().toggleClass('current hide');
+    $target.find('button').toggleClass('hide');
+    $target.find('a').toggleClass('hide');
+    $target.next().toggleClass('current grey-text');
+    $target.next().find('input').prop('disabled', false);
+    $target.next().find('button').toggleClass('hide');
   };
 
   const collectData = function() {
     inputData = {};
-    inputData.rule = {};
+    inputData.rule = [];
 
     $('.input-field').find('input[type="number"]').each((index, element) => {
       inputData[element.id] = element.value;
     });
-    $('.input-field').find('input:radio:checked').each((index, element) => {
-      inputData.rule[element.name] = element.value;
+    $('.input-field').find(':radio:checked').each((index, element) => {
+      const arrIndex = parseInt(element.name.match(/\d+/));
+      const type = element.name.match(/\w+/);
+
+      inputData.rule[arrIndex] = inputData.rule[arrIndex] || {};
+      inputData.rule[arrIndex][type] = element.value;
     });
 
-    remainingRuns = parseInt(inputData.q4);
+    remainingRuns = parseInt(inputData.repeats);
   };
 
-  const drawDeck = function(id, deckCount) {
-    const cardCount = deckCount * 52;
+  const convertFraction = function(obj) {
+    const arr = Object.keys(obj);
+
+    if (arr.length === 2) {
+      return '1/4 x 1/13';
+    }
+    else if (arr.length === 1 && arr.includes('suit')) {
+      return '1/4';
+    }
+    else if (arr.length === 1 && arr.includes('value')) {
+      return '1/13';
+    }
+  };
+
+  const sumValue = function(string) {
+    if (string === '1/4 x 1/13') {
+      return 1;
+    }
+    else if (string === '1/4') {
+      return 13;
+    }
+    else if (string === '1/13') {
+      return 4;
+    }
+  };
+
+  const displayCalculation = function(array) {
+    const fracArray = array.map((element) => {
+      return convertFraction(element);
+    });
+    const sum = fracArray.map((item) => {
+      return sumValue(item);
+    }).reduce((num1, num2) => {
+      return num1 + num2;
+    }, 0);
+    const union = sum - instance;
+    const probability = instance / 52 * 100;
+
+    if (union === 0) {
+      $('#calculation').text(fracArray.join(' + '));
+    }
+    else {
+      $('#calculation').text(`${fracArray.join(' + ')} - ${union}/52`);
+    }
+
+    $('#calc-prob').text(`${instance} / 52 = ${probability.toFixed(2)}%`);
+  };
+
+  const drawDeck = function(id) {
     const $xhr = $.ajax({
       method: 'GET',
-      url: `https://deckofcardsapi.com/api/deck/${id}/draw/?count=${cardCount}`,
+      url: `https://deckofcardsapi.com/api/deck/${id}/draw/?count=52`,
       dataType: 'json'
     });
 
@@ -72,29 +131,40 @@
 
         card.code = obj.code;
         card.images = obj.images;
+        card.condition = false;
 
-        if (obj.value === inputData.rule.value && obj.suit === inputData.rule.suit) {
-          card.condition = true;
-        }
-        else if (typeof inputData.rule.suit === 'undefined' && obj.value === inputData.rule.value) {
-          card.condition = true;
-        }
-        else if (typeof inputData.rule.value === 'undefined' && obj.suit === inputData.rule.suit) {
-          card.condition = true;
-        }
-        else {
-          card.condition = false;
+        for (const ruleObj of inputData.rule) {
+          if (obj.value === ruleObj.value && obj.suit === ruleObj.suit) {
+            if (!card.condition) {
+              instance += 1;
+            }
+            card.condition = true;
+          }
+          else if (typeof ruleObj.suit === 'undefined' && obj.value === ruleObj.value) {
+            if (!card.condition) {
+              instance += 1;
+            }
+            card.condition = true;
+          }
+          else if (typeof ruleObj.value === 'undefined' && obj.suit === ruleObj.suit) {
+            if (!card.condition) {
+              instance += 1;
+            }
+            card.condition = true;
+          }
         }
 
         return card;
       });
+
+      displayCalculation(inputData.rule);
     });
   };
 
   const generateDeck = function(data) {
     const $xhr = $.ajax({
       method: 'GET',
-      url: `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${data.q1}`,
+      url: 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1',
       dataType: 'json'
     });
 
@@ -105,7 +175,7 @@
 
       const deckID = result.deck_id;
 
-      drawDeck(deckID, data.q1);
+      drawDeck(deckID);
     });
   };
 
@@ -132,45 +202,55 @@
 
     if (inputValidation($curQuestion)) {
       displayNextQ($curQuestion);
-    } else {
+    }
+    else {
       Materialize.toast('Please enter a valid response.', 2000);
     }
   });
 
-  const modalText = function() {
-    const ruleArr = Object.keys(inputData.rule);
+  $('.last-btn').on('click', () => {
+    $('#submit-buttons').removeClass('hide');
+  });
 
-    $('#modal1 ul.modal-rules').append($('<li>').text(`Creating a deck with ${inputData.q1} standard deck`));
-    $('#modal1 ul.modal-rules').append($('<li>').addClass('modal-condition'));
+  const conditionText = function(inputObj, index) {
+    const ruleArr = Object.keys(inputObj);
+    const length = inputData.rule.length;
+    let string;
 
     if (ruleArr.length === 2) {
-      $('li.modal-condition').text(`Looking for ${inputData.rule.value} of ${inputData.rule.suit}.`);
+      string = ` ${inputObj.value} of ${inputObj.suit}`;
     }
     else if (ruleArr.length === 1 && ruleArr.includes('suit')) {
-      $('li.modal-condition').text(`Looking for any ${inputData.rule[ruleArr[0]]}.`);
+      string = ` ${inputObj.suit} of any value`;
     }
     else if (ruleArr.length === 1 && ruleArr.includes('value')) {
-      $('li.modal-condition').text(`Looking for all ${inputData.rule[ruleArr[0]]} of any suit.`);
+      string = ` ${inputObj.value} of any suit`;
     }
 
-    $('#modal1 ul.modal-rules').append($('<li>').text(`Repeating ${inputData.q4} times.`));
+    if (index <= length - 3) {
+      string += ',';
+    }
+    else if (index === length - 2) {
+      string += ' or';
+    }
+
+    return string;
   };
 
-  $('select.rules').on('change', () => {
-    const selected = $('select.rules').val();
+  const modalText = function() {
+    const $modalRules = $('#modal1 ul.modal-rules');
 
-    if (selected.includes('suit')) {
-      $('.suits input[type="radio"]').prop('disabled', false);
-    } else {
-      $('.suits input[type="radio"]').prop('disabled', true);
-    }
+    $modalRules.empty();
+    $('<li>').text('Creating a standard deck of cards').appendTo($modalRules);
+    $('<li>').addClass('modal-condition').appendTo($modalRules);
 
-    if (selected.includes('value')) {
-      $('.values input[type="radio"]').prop('disabled', false);
-    } else {
-      $('.values input[type="radio"]').prop('disabled', true);
-    }
-  });
+    const condition = inputData.rule.reduce((string, object, index) => {
+      return string + conditionText(object, index);
+    }, 'Looking for');
+
+    $('li.modal-condition').text(condition);
+    $('<li>').text(`Repeating ${inputData.repeats} times.`).appendTo($('#modal1 ul.modal-rules'));
+  };
 
   $('#modal-btn1').on('click', () => {
     collectData();
@@ -178,7 +258,7 @@
   });
 
   $('#submit-input').on('click', () => {
-    $('#rule-page').text('RULE: ' + $('li.modal-condition').text());
+    $('#rule-page').text(`RULE: ${$('li.modal-condition').text()}`);
     $('#input').css('min-height', 0);
     $('#input').slideUp();
     generateDeck(inputData);
@@ -202,7 +282,7 @@
   };
 
   const updateProgressBar = function() {
-    const progress = currentState.total / inputData.q4 * 100;
+    const progress = currentState.total / inputData.repeats * 100;
 
     $('#progress').attr('style', `width: ${progress}%`);
   };
@@ -221,7 +301,8 @@
     $('#card-image img').attr('src', card.images.png);
     if (card.condition) {
       $('#card-image img').addClass('occurrence');
-    } else {
+    }
+    else {
       $('#card-image img').removeClass('occurrence');
     }
 
@@ -267,6 +348,21 @@
     }
   });
 
+  const drawLoop = function() {
+    while (remainingRuns > 0) {
+      const card = drawCard();
+
+      updateMeasurement(card);
+      $('.mes-oc').text(currentState.occurrence);
+      $('.mes-to').text(currentState.total);
+      $('.mes-pr').text((currentState.occurrence / currentState.total * 100).toFixed(2));
+      updateProgressBar();
+      remainingRuns -= 1;
+    }
+    $('button[name="pause"]').prop('disabled', true);
+    timer.stop();
+  };
+
   $('#speed').on('change', () => {
     if (running) {
       const speed = parseFloat($('#speed').val()) * 1000;
@@ -281,13 +377,32 @@
 
     $('button[name="start"]').toggleClass('hide');
     $('button[name="pause"]').toggleClass('hide');
+    $('button[name="next"]').prop('disabled', true);
     timer.start(speed);
   });
 
   $('button[name="pause"]').on('click', () => {
     $('button[name="start"]').toggleClass('hide');
     $('button[name="pause"]').toggleClass('hide');
+    $('button[name="next"]').prop('disabled', false);
     timer.stop();
+  });
+
+  $('button[name="next"]').on('click', () => {
+    renderCard();
+    remainingRuns -= 1;
+    if (remainingRuns === 0) {
+      $('button[name="start"]').prop('disabled', true);
+      $('button[name="finish"]').prop('disabled', true);
+      $('button[name="next"]').prop('disabled', true);
+    }
+  });
+
+  $('button[name="finish"]').on('click', () => {
+    drawLoop();
+    $('button[name="start"]').prop('disabled', true);
+    $('button[name="finish"]').prop('disabled', true);
+    $('button[name="next"]').prop('disabled', true);
   });
 
   $('.reset').on('click', () => {

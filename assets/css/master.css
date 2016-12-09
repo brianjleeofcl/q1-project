@@ -23,6 +23,11 @@ img.occurrence {
   margin-bottom: 3px;
 }
 
+.radio label {
+  padding-left: 23px !important;
+  padding-right: 5px;
+}
+
 #input {
   z-index: 2;
   position: absolute;
@@ -37,7 +42,18 @@ img.occurrence {
   width: 100%;
 }
 
-#rule-radio label {
-  padding-left: 23px;
-  padding-right: 5px;
+#preview-grid div {
+  display: flex;
+  justify-content: space-between;
+}
+
+#preview-grid img {
+  width: 7.5%;
+  padding: 0;
+  height: 7.5%;
+}
+
+#preview-grid img.shade{
+  background-color: black;
+  mix-blend-mode: difference;
 }
