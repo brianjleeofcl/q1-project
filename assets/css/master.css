@@ -30,6 +30,11 @@ a, button, i {
   cursor: pointer;
 }
 
+button[name="next"]:active{
+  background-color: white;
+  color: #673ab7;
+}
+
 .control-inputs button {
   margin-bottom: 3px;
 }

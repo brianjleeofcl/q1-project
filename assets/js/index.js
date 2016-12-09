@@ -341,6 +341,7 @@
     remainingRuns -= 1;
     if (remainingRuns === 0) {
       $('button[name="pause"]').prop('disabled', true);
+      $('button[name="finish"]').prop('disabled', true);
       timer.stop();
     }
   });
