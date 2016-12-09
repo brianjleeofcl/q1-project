@@ -227,6 +227,7 @@
 
   $('.last-btn').on('click', () => {
     $('#submit-buttons').removeClass('hide');
+    $("html, body").animate({ scrollTop: $(document).height() }, 1000);
   });
 
   const conditionText = function(inputObj, index) {
