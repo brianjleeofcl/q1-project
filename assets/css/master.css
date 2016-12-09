@@ -57,3 +57,26 @@ img.occurrence {
   background-color: black;
   mix-blend-mode: difference;
 }
+.nom, .dnom {
+  display: flex;
+  justify-content: center;
+}
+.frac .dnom span{
+  border-top: 2px solid black;
+}
+.math {
+  font-size: 1.64rem;
+  line-height: 110%;
+  margin: 0.82rem 0 0.656rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.math div {
+  margin-left: 5px;
+}
+.frac {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}

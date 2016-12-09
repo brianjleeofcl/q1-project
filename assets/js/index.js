@@ -92,6 +92,46 @@
     }
   };
 
+  const fracDOM = function(string) {
+    if (string === '1/4 x 1/13') {
+      const $frac1 = $('<div>').addClass('frac');
+      const $frac2 = $('<div>').addClass('frac');
+      const $x = $('<div>').text('×');
+      const $nom1 = $('<div>').addClass('nom');
+      const $dnom1 = $('<div>').addClass('dnom');
+      const $nom2 = $('<div>').addClass('nom');
+      const $dnom2 = $('<div>').addClass('dnom');
+
+      $nom1.append($('<span>').text('1'));
+      $dnom1.append($('<span>').text('4'));
+      $nom2.append($('<span>').text('1'));
+      $dnom2.append($('<span>').text('13'));
+      $frac1.append($nom1, $dnom1);
+      $frac2.append($nom2, $dnom2);
+      return [$frac1, $x, $frac2];
+    }
+    else if (string === '1/4') {
+      const $frac = $('<div>').addClass('frac');
+      const $nom = $('<div>').addClass('nom');
+      const $dnom = $('<div>').addClass('dnom');
+
+      $nom.append($('<span>').text('1'));
+      $dnom.append($('<span>').text('4'));
+      $frac.append($nom, $dnom);
+      return $frac;
+    }
+    else if (string === '1/13') {
+      const $frac = $('<div>').addClass('frac');
+      const $nom = $('<div>').addClass('nom');
+      const $dnom = $('<div>').addClass('dnom');
+
+      $nom.append($('<span>').text('1'));
+      $dnom.append($('<span>').text('13'));
+      $frac.append($nom, $dnom);
+      return $frac;
+    }
+  }
+
   const displayCalculation = function(array) {
     const fracArray = array.map((element) => {
       return convertFraction(element);
@@ -104,14 +144,29 @@
     const union = sum - instance;
     const probability = instance / 52 * 100;
 
-    if (union === 0) {
-      $('#calculation').text(fracArray.join(' + '));
-    }
-    else {
-      $('#calculation').text(`${fracArray.join(' + ')} - ${union}/52`);
+    const $math = $('<div>').addClass('math');
+
+    for (let i = 0; i < fracArray.length; i++) {
+      if (i) {
+        $math.append($('<div>').text('+'))
+      }
+      $math.append(fracDOM(fracArray[i]));
     }
 
-    $('#calc-prob').text(`${instance} / 52 = ${probability.toFixed(2)}%`);
+    if (union) {
+      const $frac = $('<div>').addClass('frac');
+      const $nom = $('<div>').addClass('nom');
+      const $dnom = $('<div>').addClass('dnom');
+
+      $nom.append($('<span>').text(union));
+      $dnom.append($('<span>').text('52'));
+      $frac.append($nom, $dnom);
+      $math.append($('<div>').text('–'), $frac);
+    }
+
+    $('#calculation').append($math);
+    $('#inst').text(instance);
+    $('#calc-prob').text(`${probability.toFixed(2)}%`);
   };
 
   const drawDeck = function(id) {
@@ -258,6 +313,7 @@
       currentState.occurrence += 1;
     }
     currentState.total += 1;
+    $('#equals').removeClass('hide');
   };
 
   const updateProgressBar = function() {
@@ -280,7 +336,7 @@
     updateMeasurement(card);
     $('.mes-oc').text(currentState.occurrence);
     $('.mes-to').text(currentState.total);
-    $('.mes-pr').text((currentState.occurrence / currentState.total * 100).toFixed(2));
+    $('#mes-pr').text(`${(currentState.occurrence / currentState.total * 100).toFixed(2)}%`);
     updateProgressBar();
   };
 
@@ -317,7 +373,7 @@
       updateMeasurement(card);
       $('.mes-oc').text(currentState.occurrence);
       $('.mes-to').text(currentState.total);
-      $('.mes-pr').text((currentState.occurrence / currentState.total * 100).toFixed(2));
+      $('#mes-pr').text(`${(currentState.occurrence / currentState.total * 100).toFixed(2)}%`);
       updateProgressBar();
       remainingRuns -= 1;
     }
