@@ -31,7 +31,8 @@
 
         if (object.value === '10') {
           num = '0';
-        } else {
+        }
+        else {
           num = object.value[0];
         }
 
@@ -47,14 +48,15 @@
 
         if (object.value === '10') {
           num = '0';
-        } else {
+        }
+        else {
           num = object.value[0];
         }
 
         $(`.${num}`).addClass('shade');
       }
     }
-  }
+  };
 
   $(document).on('ready', () => {
     drawGrid();
@@ -62,8 +64,8 @@
 
   $('#input').on('change', ':radio', () => {
     const rules = [];
-    $('#preview-grid img').removeClass('shade')
 
+    $('#preview-grid img').removeClass('shade');
     $('.input-field').find(':radio:checked').each((index, element) => {
       const arrIndex = parseInt(element.name.match(/\d+/));
       const type = element.name.match(/\w+/);

@@ -92,45 +92,31 @@
     }
   };
 
-  const fracDOM = function(string) {
-    if (string === '1/4 x 1/13') {
-      const $frac1 = $('<div>').addClass('frac');
-      const $frac2 = $('<div>').addClass('frac');
-      const $x = $('<div>').text('×');
-      const $nom1 = $('<div>').addClass('nom');
-      const $dnom1 = $('<div>').addClass('dnom');
-      const $nom2 = $('<div>').addClass('nom');
-      const $dnom2 = $('<div>').addClass('dnom');
+  const $fraction = function(nomin, denom) {
+    const $frac = $('<div>').addClass('frac');
+    const $nom = $('<div>').addClass('nom');
+    const $dnom = $('<div>').addClass('dnom');
 
-      $nom1.append($('<span>').text('1'));
-      $dnom1.append($('<span>').text('4'));
-      $nom2.append($('<span>').text('1'));
-      $dnom2.append($('<span>').text('13'));
-      $frac1.append($nom1, $dnom1);
-      $frac2.append($nom2, $dnom2);
-      return [$frac1, $x, $frac2];
+    $nom.append($('<span>').text(nomin));
+    $dnom.append($('<span>').text(denom));
+    $frac.append($nom, $dnom);
+
+    return $frac;
+  };
+
+  const mathDOM = function(string) {
+    if (string === '1/4 x 1/13') {
+      const $x = $('<div>').text('×');
+
+      return [$fraction('1', '4'), $x, $fraction('1', '13')];
     }
     else if (string === '1/4') {
-      const $frac = $('<div>').addClass('frac');
-      const $nom = $('<div>').addClass('nom');
-      const $dnom = $('<div>').addClass('dnom');
-
-      $nom.append($('<span>').text('1'));
-      $dnom.append($('<span>').text('4'));
-      $frac.append($nom, $dnom);
-      return $frac;
+      return $fraction('1', '4');
     }
     else if (string === '1/13') {
-      const $frac = $('<div>').addClass('frac');
-      const $nom = $('<div>').addClass('nom');
-      const $dnom = $('<div>').addClass('dnom');
-
-      $nom.append($('<span>').text('1'));
-      $dnom.append($('<span>').text('13'));
-      $frac.append($nom, $dnom);
-      return $frac;
+      return $fraction('1', '13');
     }
-  }
+  };
 
   const displayCalculation = function(array) {
     const fracArray = array.map((element) => {
@@ -148,20 +134,13 @@
 
     for (let i = 0; i < fracArray.length; i++) {
       if (i) {
-        $math.append($('<div>').text('+'))
+        $math.append($('<div>').text('+'));
       }
-      $math.append(fracDOM(fracArray[i]));
+      $math.append(mathDOM(fracArray[i]));
     }
 
     if (union) {
-      const $frac = $('<div>').addClass('frac');
-      const $nom = $('<div>').addClass('nom');
-      const $dnom = $('<div>').addClass('dnom');
-
-      $nom.append($('<span>').text(union));
-      $dnom.append($('<span>').text('52'));
-      $frac.append($nom, $dnom);
-      $math.append($('<div>').text('–'), $frac);
+      $math.append($('<div>').text('–'), $fraction(union, '52'));
     }
 
     $('#calculation').append($math);
