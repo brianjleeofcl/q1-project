@@ -419,6 +419,7 @@
     $('.mes-oc').text('');
     $('.mes-to').text('');
     $('#mes-pr').text('');
+    $('#progress').attr('style', `width: 0%`);
   });
 
   $('.reset').on('click', () => {
