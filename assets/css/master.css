@@ -1,4 +1,10 @@
+@font-face {
+  font-family: "STIX";
+  src: url('../font/STIX2Math.woff2') format('woff2');
+}
+
 body {
+  font-family: 'STIX';
   display: flex;
   min-height: 100vh;
   flex-direction: column;
@@ -26,6 +32,10 @@ img.occurrence {
 .radio label {
   padding-left: 23px !important;
   padding-right: 5px;
+}
+
+.control-inputs button {
+  width: 100%;
 }
 
 #input {
@@ -65,7 +75,7 @@ img.occurrence {
   border-top: 2px solid black;
 }
 .math {
-  font-size: 1.64rem;
+  font-size: 2rem;
   line-height: 110%;
   margin: 0.82rem 0 0.656rem 0;
   display: flex;

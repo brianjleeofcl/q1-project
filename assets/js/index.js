@@ -402,6 +402,24 @@
     $('button[name="next"]').prop('disabled', true);
   });
 
+  $('#run-again').on('click', () => {
+    timer.stop();
+    currentState = {
+      occurrence: 0,
+      total: 0
+    };
+    remainingRuns = parseInt(inputData.repeats);
+    $('button[name="start"]').removeClass('hide');
+    $('button[name="pause"]').addClass('hide');
+    $('button[name="pause"]').prop('disabled', false);
+    $('button[name="start"]').prop('disabled', false);
+    $('button[name="finish"]').prop('disabled', false);
+    $('button[name="next"]').prop('disabled', false);
+    $('.mes-oc').text('');
+    $('.mes-to').text('');
+    $('#mes-pr').text('');
+  });
+
   $('.reset').on('click', () => {
     $('#modal2').modal('open');
   });
