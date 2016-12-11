@@ -31,8 +31,11 @@ a, button, i {
 }
 
 button[name="next"]:active{
-  background-color: white;
+  background-color: white !important;
   color: #673ab7;
+}
+button i{
+
 }
 
 .control-inputs button {
