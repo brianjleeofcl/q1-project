@@ -2,7 +2,26 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
     <title>shuffle/repeat</title>
+    <meta name="description" content="A site that shuffles a deck of cards, picks one and repeats it many times.">
+
+    <!-- twitter card tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- <meta name="twitter:domain" value="brianjlee.net" /> -->
+    <meta name="twitter:title" value="shuffle/repeat" />
+    <meta name="twitter:description" value="A site that shuffles a deck of cards, picks one and repeats it many times." />
+    <!-- <meta name="twitter:image" content="https://i.imgur.com/m6L19k8.jpg" /> -->
+    <!-- <meta name="twitter:url" value="http://www.brianjlee.net/" /> -->
+
+    <!-- facebook open graph tags -->
+    <!-- <meta property="og:url" content="http://www.brianjlee.net"/> -->
+    <meta property="og:title" content="shuffle/repeat"/>
+    <meta property="og:description" content="A site that shuffles a deck of cards, picks one and repeats it many times."/>
+    <!-- <meta property="og:image" content="https://i.imgur.com/m6L19k8.jpg"/> -->
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="shuffle/repeat"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -116,8 +135,8 @@
                   <input type="range" id="speed" value="1" max="1.5" min="0.25" step="0.25">
                 </p>
                 <div class="center-align">
-                  <button class="btn green" name="start">start</button>
-                  <button class="hide btn red" name="pause">pause</button>
+                  <button class="btn green" name="start"><i class="material-icons left">play</i>start</button>
+                  <button class="hide btn red" name="pause"><i class="material-icons left">pause</i>pause</button>
                   <button class="btn deep-purple" name="next">next card</button>
                   <button class="btn deep-purple" name="finish">finish</button>
                 </div>
@@ -188,7 +207,7 @@
       <div class="footer-copyright">
         <div class="container">
           © Brian J. Lee, 2016
-          <a class="grey-text text-lighten-4 right" href="#!">about</a>
+          <a class="grey-text text-lighten-4 right" href="about.html">about</a>
         </div>
       </div>
     </footer>
