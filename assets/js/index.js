@@ -334,7 +334,7 @@
 
     cardHistory.push(card);
 
-    if (cardHistory.length > 10) {
+    if (cardHistory.length > 20) {
       cardHistory.shift();
     }
 
@@ -388,7 +388,7 @@
     while (remainingRuns > 0) {
       const card = drawCard();
 
-      if (remainingRuns <= 10) {
+      if (remainingRuns <= 20) {
         cardHistory.push(card);
       }
 
