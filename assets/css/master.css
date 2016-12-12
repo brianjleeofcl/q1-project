@@ -93,6 +93,11 @@ nav .brand-logo i.material-icons{
   background-color: black;
   mix-blend-mode: difference;
 }
+
+#card-history-row img {
+  width: 10%;
+  height: 10%;
+}
 .nom, .dnom {
   display: flex;
   justify-content: center;
