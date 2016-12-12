@@ -12,6 +12,7 @@
     total: 0
   };
   let instance = 0;
+  let cardHistory = [];
 
   const numberValidate = function($input) {
     const num = parseInt($input.val());
@@ -314,8 +315,30 @@
     $('#progress').attr('style', `width: ${progress}%`);
   };
 
+  const updateImageHistory = function(array) {
+    $('#card-history-row').empty();
+
+    for (const card of array) {
+      const $img = $('<img>').attr('src', card.images.png);
+
+      if (card.condition) {
+        $img.addClass('occurrence');
+      }
+
+      $('#card-history-row').append($img);
+    }
+  }
+
   const renderCard = function() {
     const card = drawCard();
+
+    cardHistory.push(card);
+
+    if (cardHistory.length > 10) {
+      cardHistory.shift();
+    }
+
+    updateImageHistory(cardHistory);
 
     $('#card-image img').attr('src', card.images.png);
     if (card.condition) {
@@ -360,8 +383,14 @@
   });
 
   const drawLoop = function() {
+    cardHistory.length = 0;
+
     while (remainingRuns > 0) {
       const card = drawCard();
+
+      if (remainingRuns <= 10) {
+        cardHistory.push(card);
+      }
 
       updateMeasurement(card);
       $('.mes-oc').text(currentState.occurrence);
@@ -371,6 +400,7 @@
       remainingRuns -= 1;
     }
     $('button[name="pause"]').prop('disabled', true);
+    updateImageHistory(cardHistory);
     timer.stop();
   };
 
