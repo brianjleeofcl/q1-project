@@ -1,9 +1,17 @@
 # shuffle/repeat
+Web project by **Brian J. Lee**
+
+December 11, 2016
 
 ## Description
 
+shuffle/repeat is *quite literally* what this site does: it shuffles a deck of cards, picks a card and repeats.
 
-This site is meant as a teaching tool for probabilities of randomly occurring events. By repeating a simple random process over multiple, user-defined iterations, it demonstrates key principles of probability theory and allows for easy visualization.
+While this process may seem trivial, when repeated over large enough numbers, it reveals a useful pattern of a probabilistic model that is otherwise difficult to replicate in real life.
+
+The site is meant as a teaching tool for probabilities of randomly occurring events. By repeating a simple random process over multiple, user-defined iterations, it demonstrates key principles of probability theory and allows for easy visualization.
+
+The clean layout, simple setup and fast-running code is well suited for uses in classroom demonstrations or self-guided study of probability.
 
 ## Features
 
@@ -34,13 +42,13 @@ This section will record the measured probability of the simulation that the pro
 
 ![measure-gif](assets/measure.gif)
 ###### Controls:
-Interval – slider controls the interval between each card, in 0.25 second intervals between 0.25 and 1.5 seconds.
+**Interval** – slider controls the interval between each card, in 0.25 second intervals between 0.25 and 1.5 seconds.
 
-Start/Pause – buttons will start/stop the repeated rendering.
+**Start/Pause** – buttons will start/stop the repeated rendering.
 
-Next – button will manually show the next card on each click. This button is only enabled while the interval repetition is paused.
+**Next** – button will manually show the next card on each click. This button is only enabled while the interval repetition is paused.
 
-Finish - button will complete the given repetitions without displaying the results, skipping over to the final run.
+**Finish** - button will complete the given repetitions without displaying the results, skipping over to the final run.
 
 #### About
 Separate 'about' page with reference links is provided in the footer of the page.
@@ -56,8 +64,14 @@ Following technologies have been used in the development of this product:
 
 The site utilizes a Materialize framework. Rendering, calculations and other functionalities utilizes native JavaScript with additional DOM interactions using jQuery.
 
+Previously, the site planned on using dedicated technology for rendering math elements such as MathJax or MathML notations. This plan was abandoned due to the costs involved in system performance and the lack of universal support between browsers.
+
 Additionally, the following style elements have been incorporated:
 - Material Icons
 - STIX font [(link)](http://stixfonts.org/)
 
 ## Further development
+
+There is some potential for future development to this project. One possibility is to consider other similar models of random events such as coin tosses or dice rolls.
+
+Another possibility is adapting the same simulation to apply to other similar concepts of probability and statistics such as probability distributions or probability mass functions. This would augment the expected primary use case to a more expanded learning tool.
