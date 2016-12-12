@@ -48,6 +48,16 @@
     $target.next().find('button').toggleClass('hide');
   };
 
+  Array.prototype.clean = function(deleteValue) {
+    for (let i = 0; i < this.length; i++) {
+      if (this[i] === deleteValue) {
+        this.splice(i, 1);
+        i--;
+      }
+    }
+    return this;
+  };
+
   const collectData = function() {
     inputData = {};
     inputData.rule = [];
@@ -63,6 +73,7 @@
       inputData.rule[arrIndex][type] = element.value;
     });
 
+    inputData.rule.clean(undefined);
     remainingRuns = parseInt(inputData.repeats);
   };
 
@@ -227,7 +238,7 @@
 
   $('.last-btn').on('click', () => {
     $('#submit-buttons').removeClass('hide');
-    $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+    $('html, body').animate({ scrollTop: $(document).height() }, 1000);
   });
 
   const conditionText = function(inputObj, index) {
@@ -420,7 +431,7 @@
     $('.mes-oc').text('');
     $('.mes-to').text('');
     $('#mes-pr').text('');
-    $('#progress').attr('style', `width: 0%`);
+    $('#progress').attr('style', 'width: 0%');
   });
 
   $('.reset').on('click', () => {

@@ -76,10 +76,89 @@
     }
   };
 
-  $(document).on('ready', newConditions(false));
+  const drawGrid = function() {
+    const $grid = $('#preview-grid');
+
+    for (const lr of ['S', 'H', 'C', 'D']) {
+      const $row = $('<div>');
+
+      for (const num of [
+        'A', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K'
+      ]) {
+        const url = `http://deckofcardsapi.com/static/img/${num}${lr}.png`;
+        const $img = $('<img>').attr('src', url);
+
+        $img.addClass(`${lr} ${num}`);
+        $img.appendTo($row);
+      }
+
+      $row.appendTo($grid);
+    }
+  };
+
+  const applyShade = function(array) {
+    for (const object of array) {
+      const keyArr = Object.keys(object) || [];
+
+      if (keyArr.length === 2) {
+        const lr = object.suit[0];
+        const num = object.value === '10' ? '0' : object.value[0];
+
+        $(`.${lr}.${num}`).addClass('shade');
+      }
+      else if (keyArr.length === 1 && keyArr.includes('suit')) {
+        const lr = object.suit[0];
+
+        $(`.${lr}`).addClass('shade');
+      }
+      else if (keyArr.length === 1 && keyArr.includes('value')) {
+        const num = object.value === '10' ? '0' : object.value[0];
+
+        $(`.${num}`).addClass('shade');
+      }
+    }
+  };
+
+  Array.prototype.clean = function(deleteValue) {
+    for (let i = 0; i < this.length; i++) {
+      if (this[i] === deleteValue) {
+        this.splice(i, 1);
+        i--;
+      }
+    }
+
+    return this;
+  };
+
+  const collectRules = function() {
+    const array = [];
+
+    $('#input').find(':radio:checked').each((index, element) => {
+      const arrIndex = parseInt(element.name.match(/\d+/));
+      const type = element.name.match(/\w+/);
+
+      array[arrIndex] = array[arrIndex] || {};
+      array[arrIndex][type] = element.value;
+    });
+
+    return array.clean(undefined);
+  };
+
+  $(document).on('ready', () => {
+    newConditions(false);
+    $('select').material_select();
+    drawGrid();
+  });
+
   $('#add-condition').on('click', () => {
     newConditions(true);
     $('select').material_select();
+  });
+
+  $('#input').on('change', ':radio', () => {
+    $('#preview-grid img').removeClass('shade');
+
+    applyShade(collectRules());
   });
 
   $('#input').on('change', 'select', () => {
@@ -105,6 +184,10 @@
         checked: false
       });
     }
+
+    $('#preview-grid img').removeClass('shade');
+
+    applyShade(collectRules());
   });
 
   $('#input').on('mouseenter mouseleave', 'i.delete', () => {
@@ -113,5 +196,9 @@
 
   $('#input').on('click', 'i.delete', () => {
     $(event.target).parents('.condition-row').remove();
+
+    $('#preview-grid img').removeClass('shade');
+
+    applyShade(collectRules());
   });
 })();
