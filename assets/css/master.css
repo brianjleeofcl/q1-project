@@ -116,3 +116,11 @@ nav .brand-logo i.material-icons{
   flex-flow: column;
   align-items: center;
 }
+
+dt {
+  margin-top: 5px;
+}
+.large-link {
+  font-size: 2em;
+  margin-bottom: 30px;
+}
