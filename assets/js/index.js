@@ -327,7 +327,7 @@
 
       $('#card-history-row').append($img);
     }
-  }
+  };
 
   const renderCard = function() {
     const card = drawCard();
@@ -463,6 +463,8 @@
     $('.mes-to').text('');
     $('#mes-pr').text('');
     $('#progress').attr('style', 'width: 0%');
+    cardHistory.length = 0;
+    updateImageHistory(cardHistory);
   });
 
   $('.reset').on('click', () => {
