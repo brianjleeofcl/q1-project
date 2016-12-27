@@ -1,8 +1,8 @@
-(function() {
+module.exports = function() {
   'use strict';
 
   let condCount = 0;
-  const buttonData = radioOptions;
+  const buttonData = require('./data.js');
 
   const selection = function() {
     const $select = $('<select>').attr('id', `rules-${condCount}`);
@@ -201,4 +201,4 @@
 
     applyShade(collectRules());
   });
-})();
+};

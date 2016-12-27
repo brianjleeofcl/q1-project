@@ -1,4 +1,4 @@
-const radioOptions = [
+module.exports = [
   {
     class: 'suit',
     radio: [

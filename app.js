@@ -1,6 +1,9 @@
-(function() {
+module.exports = app;
+
+const app = function() {
   'use strict';
 
+  require('./input.js');
   $('select').material_select();
   $('.modal').modal();
 
@@ -474,4 +477,4 @@
   $('#reset').on('click', () => {
     document.location.reload();
   });
-})();
+};
