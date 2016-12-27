@@ -8,7 +8,7 @@ let win;
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({width: 800, height: 600, webPreferences: {
+  win = new BrowserWindow({width: 1280, height: 720, webPreferences: {
     nodeIntegration: false
   }});
 
@@ -18,7 +18,7 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }));
-  
+
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
