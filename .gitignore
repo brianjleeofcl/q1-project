@@ -2,3 +2,4 @@
 .surgeignore
 .eslintrc.js
 .eslintignore
+node_modules
